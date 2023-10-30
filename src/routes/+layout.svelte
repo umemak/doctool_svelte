@@ -9,7 +9,8 @@
 	<nav>
 		<a href="/">Home</a>
 		{#if data.user}
-			<a href="/guarded">Guarded</a>
+			<a href="/list">投稿一覧</a>
+			<a href="/upload">投稿</a>
 			<form method="POST" action="?/logout">
 				<button type="submit" name="logout" value="true">Logout</button>
 			</form>

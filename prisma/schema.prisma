@@ -6,14 +6,76 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model User {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  email     String    @unique
+  password  String
+  articles  Article[]
+  Comment   Comment[]
+  Like      Like[]
+  Review    Review[]
+}
+
+model Article {
+  id             String    @id @default(cuid())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  title          String
+  description    String
+  author         User      @relation(fields: [authorId], references: [id])
+  authorId       String
+  url            String
+  allow_external Boolean   @default(false)
+  Tag            Tag?      @relation(fields: [tagId], references: [id])
+  tagId          String?
+  comments       Comment[]
+  likes          Like[]
+  reviews        Review[]
+}
+
+model Tag {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  name      String    @unique
+  articles  Article[]
+}
+
+model Comment {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  email     String   @unique
-  password  String
+  body      String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  article   Article  @relation(fields: [articleId], references: [id])
+  articleId String
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  article   Article  @relation(fields: [articleId], references: [id])
+  articleId String
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  body       String
+  article    Article  @relation(fields: [articleId], references: [id])
+  articleId  String
+  reviewer   User     @relation(fields: [reviewerId], references: [id])
+  reviewerId String
+  approved   Boolean  @default(false)
 }

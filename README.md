@@ -36,3 +36,10 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+## 参考ページ
+
+- [SvelteKitをローカルのDocker環境で動かすまで #Docker - Qiita](https://qiita.com/mkin/items/5b4fb2e61cf47fc5f904)
+- [SvelteKit の JWT を使用した認証と認可の処理 - Okupter](https://www.okupter.com/blog/handling-auth-with-jwt-in-sveltekit)
+- [amazon web services - Read and write from S3 within SvelteKit using AWS SDK v3 - Stack Overflow](https://stackoverflow.com/questions/76903243/read-and-write-from-s3-within-sveltekit-using-aws-sdk-v3)
+- [yarbsemaj/sveltekit-adapter-lambda: An adapter to build a SvelteKit app into a lambda ready for deployment with lambda proxy via the Serverless Framework.](https://github.com/yarbsemaj/sveltekit-adapter-lambda)
