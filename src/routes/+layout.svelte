@@ -18,6 +18,11 @@
 			<a href="/signup">Sign Up</a>
 			<a href="/login">Log In</a>
 		{/if}
+		{#if data.external}
+			<div>外部接続({data.ipAddress})</div>
+		{:else}
+			<div>内部接続({data.ipAddress})</div>
+		{/if}
 	</nav>
 
 	<slot />

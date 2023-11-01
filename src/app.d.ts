@@ -7,5 +7,7 @@ declare namespace App {
 			id: string;
 			email: string;
 		};
+		external: boolean;
+		ipAddress: string;
 	}
 }

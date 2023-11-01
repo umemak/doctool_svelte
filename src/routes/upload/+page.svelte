@@ -1,10 +1,9 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-    import Article from "$lib/components/Article.svelte";
 
 	export let data: PageData;
 
-	const { user, articles } = data;
+	const { user, users } = data;
 </script>
 
 <svelte:head>
@@ -28,6 +27,22 @@
             <div class="group">
                 <label for="file">ファイル</label>
                 <input type="file" name="file" id="file" required />
+            </div>
+
+            <div class="group">
+                <label for="allow_external">外部公開OK</label>
+                <input type="checkbox" name="allow_external" id="allow_external" />
+            </div>
+
+            <div class="group">
+                <label for="review">要レビュー</label>
+                <input type="checkbox" name="review" id="review" />
+                <label for="reviewer">レビュー担当者</label>
+                <select name="reviewer" id="reviewer">
+                    {#each users as user}
+                        <option value={user.id}>{user.email}</option>
+                    {/each}
+                </select>
             </div>
 
             <div class="submit-container">

@@ -1,5 +1,5 @@
 import type { Handle } from '@sveltejs/kit';
-import { JWT_ACCESS_SECRET } from '$env/static/private';
+import { JWT_ACCESS_SECRET, INTERNAL_ADDRESSES } from '$env/static/private';
 import jwt from 'jsonwebtoken';
 
 import { db } from '$lib/db';
@@ -38,6 +38,16 @@ const handle: Handle = async ({ event, resolve }) => {
 		}
 	}
 
+	const ipAddress = event.getClientAddress();
+	event.locals.ipAddress = ipAddress;
+	event.locals.external = true;
+	const ias = INTERNAL_ADDRESSES.split(',');
+	for (let i = 0; i < ias.length; i++) {
+		if (ipAddress == ias[i]) {
+			event.locals.external = false;
+			break;
+		}
+	}
 	return await resolve(event);
 };
 

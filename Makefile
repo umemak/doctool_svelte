@@ -15,6 +15,7 @@ app:
 .PHONY: migrate
 migrate:
 	npx prisma db push
+	npx prisma generate
 
 .PHONY: restart_app
 restart_app:
