@@ -39,17 +39,16 @@ export const actions: Actions = {
 		// アップロードするファイル情報の取得
 		const formData = Object.fromEntries(await event.request.formData());
 		const file = formData.file as File;
-		const fileName = file.name;
 		// S3にアップロード
 		const client = new S3Client({
 			region: AWS_REGION,
 			credentials: {
 				accessKeyId: ACCESS_KEY_ID,
-				secretAccessKey: ACCESS_KEY_SECRET
+				secretAccessKey: ACCESS_KEY_SECRET,
 			},
-			endpoint: AWS_ENDPOINT
+			// endpoint: AWS_ENDPOINT
 		});
-		let objPath = S3_BUCKET_NAME + "/" + ulid().toLowerCase() + "/" + fileName;
+		let objPath = ulid().toLowerCase();
 		const command = new PutObjectCommand({
 			Bucket: S3_BUCKET_NAME,
 			Key: objPath,
@@ -67,6 +66,7 @@ export const actions: Actions = {
 				title: formData.title as string,
 				description: formData.description as string,
 				path: objPath,
+				filename: file.name,
 				authorId: user.id,
 				allow_external: formData.allow_external === "on" ? true : false,
 			}

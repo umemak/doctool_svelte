@@ -31,6 +31,7 @@ model Article {
   author         User      @relation(fields: [authorId], references: [id])
   authorId       String
   path           String
+  filename       String    @default("")
   allow_external Boolean   @default(false)
   tags           Tag[]
   tagId          String?

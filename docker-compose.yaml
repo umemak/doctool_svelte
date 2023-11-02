@@ -1,32 +1,32 @@
 version: '3'
 services:
-  app:
-    container_name: app
-    build:
-      context: .
-      target: development
-    environment:
-      - NODE_ENV=development
-      - PORT=5173
-      - HOST=0.0.0.0
-      - DATABASE_URL=mysql://root:example@db:3306/demo
-      - JWT_ACCESS_SECRET=secret
-    ports:
-      - 5173:5173
-    volumes:
-      - ./src:/app/src
-      - ./static:/app/static
-      - ./vite.config.ts:/app/vite.config.ts
-      - ./tsconfig.json:/app/tsconfig.json
-      - ./svelte.config.js:/app/svelte.config.js
-      - ./prisma:/app/prisma
-      # - .:/app
-      # - app_svelte_node_modules:/app/node_modules
-    depends_on:
-      db:
-        condition: service_healthy
-    # working_dir: /home/node/app
-    command: npm run dev -- --host
+  # app:
+  #   container_name: app
+  #   build:
+  #     context: .
+  #     target: development
+  #   environment:
+  #     - NODE_ENV=development
+  #     - PORT=5173
+  #     - HOST=0.0.0.0
+  #     - DATABASE_URL=mysql://root:example@db:3306/demo
+  #     - JWT_ACCESS_SECRET=secret
+  #   ports:
+  #     - 5173:5173
+  #   volumes:
+  #     - ./src:/app/src
+  #     - ./static:/app/static
+  #     - ./vite.config.ts:/app/vite.config.ts
+  #     - ./tsconfig.json:/app/tsconfig.json
+  #     - ./svelte.config.js:/app/svelte.config.js
+  #     - ./prisma:/app/prisma
+  #     # - .:/app
+  #     # - app_svelte_node_modules:/app/node_modules
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   # working_dir: /home/node/app
+  #   command: npm run dev -- --host
   db:
     image: mysql:8.0
     container_name: db
