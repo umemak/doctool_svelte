@@ -16,7 +16,7 @@
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			{#if article.allow_external || !external}
-				<div class="article" on:click={() => goto(`/p/${article.id}`)}>
+				<div class="article" on:click={() => goto(`/view/${article.id}`)}>
 					<h2>{article.title}</h2>
 					<small>
 						{article.author?.email ? `By ${article.author.email}` : 'Unknown author'}

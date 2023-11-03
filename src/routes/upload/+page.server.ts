@@ -13,10 +13,7 @@ export const load: PageServerLoad = async (event) => {
 			message: 'You must be logged in to view this page'
 		});
 	}
-	const articles = await db.article.findMany()
 	return {
-		user: user,
-		articles: articles,
 		users: await db.user.findMany({
 			where: { NOT: { id: user.id } },
 		})
@@ -40,15 +37,30 @@ export const actions: Actions = {
 		const formData = Object.fromEntries(await event.request.formData());
 		const file = formData.file as File;
 		// S3にアップロード
-		const client = new S3Client({
-			region: AWS_REGION,
-			credentials: {
-				accessKeyId: ACCESS_KEY_ID,
-				secretAccessKey: ACCESS_KEY_SECRET,
-			},
-			// endpoint: AWS_ENDPOINT
-		});
-		let objPath = ulid().toLowerCase();
+		let objPath = "";
+		let client = null;
+		if (AWS_ENDPOINT === "") {
+			// S3
+			client = new S3Client({
+				region: AWS_REGION,
+				credentials: {
+					accessKeyId: ACCESS_KEY_ID,
+					secretAccessKey: ACCESS_KEY_SECRET,
+				},
+			});
+			objPath = ulid().toLowerCase();
+		} else {
+			// MinIO
+			client = new S3Client({
+				region: AWS_REGION,
+				credentials: {
+					accessKeyId: ACCESS_KEY_ID,
+					secretAccessKey: ACCESS_KEY_SECRET,
+				},
+				endpoint: AWS_ENDPOINT
+			});
+			objPath = S3_BUCKET_NAME + "/" + ulid().toLowerCase();
+		}
 		const command = new PutObjectCommand({
 			Bucket: S3_BUCKET_NAME,
 			Key: objPath,

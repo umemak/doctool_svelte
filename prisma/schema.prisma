@@ -33,6 +33,9 @@ model Article {
   path           String
   filename       String    @default("")
   allow_external Boolean   @default(false)
+  show_from      DateTime?
+  show_until     DateTime?
+  review_ok      Boolean   @default(false)
   tags           Tag[]
   tagId          String?
   comments       Comment[]
