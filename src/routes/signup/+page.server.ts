@@ -6,7 +6,7 @@ export const load: PageServerLoad = (event) => {
     const user = event.locals.user;
 
     if (user) {
-        throw redirect(302, '/guarded');
+        throw redirect(302, '/list');
     }
 };
 

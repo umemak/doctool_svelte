@@ -2,6 +2,7 @@
 up:
 	docker compose up -d --remove-orphans
 	"$(MAKE)" migrate
+	"$(MAKE)" seed
 	# "$(MAKE)" app
 
 .PHONY: down
@@ -20,3 +21,7 @@ migrate:
 .PHONY: restart_app
 restart_app:
 	docker compose restart app
+
+.PHONY: seed
+seed:
+	npx prisma db seed
