@@ -1,8 +1,9 @@
 import type { Actions, PageServerLoad } from './$types';
 import { error, redirect } from '@sveltejs/kit';
 import { db } from '$lib/db';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { AWS_REGION, ACCESS_KEY_ID, ACCESS_KEY_SECRET, AWS_ENDPOINT, S3_BUCKET_NAME } from '$env/static/private';
+import { s3 } from '$lib/s3';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { AWS_ENDPOINT, S3_BUCKET_NAME } from '$env/static/private';
 import { ulid } from 'ulid'
 
 export const load: PageServerLoad = async (event) => {
@@ -38,27 +39,11 @@ export const actions: Actions = {
 		const file = formData.file as File;
 		// S3にアップロード
 		let objPath = "";
-		let client = null;
 		if (AWS_ENDPOINT === "") {
 			// S3
-			client = new S3Client({
-				region: AWS_REGION,
-				credentials: {
-					accessKeyId: ACCESS_KEY_ID,
-					secretAccessKey: ACCESS_KEY_SECRET,
-				},
-			});
 			objPath = ulid().toLowerCase();
 		} else {
 			// MinIO
-			client = new S3Client({
-				region: AWS_REGION,
-				credentials: {
-					accessKeyId: ACCESS_KEY_ID,
-					secretAccessKey: ACCESS_KEY_SECRET,
-				},
-				endpoint: AWS_ENDPOINT
-			});
 			objPath = S3_BUCKET_NAME + "/" + ulid().toLowerCase();
 		}
 		const command = new PutObjectCommand({
@@ -67,7 +52,7 @@ export const actions: Actions = {
 			Body: Buffer.from(await file.arrayBuffer())
 		});
 		try {
-			const response = await client.send(command);
+			const response = await s3.send(command);
 			console.log(response);
 		} catch (err) {
 			console.error(err);
