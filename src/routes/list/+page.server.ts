@@ -11,13 +11,38 @@ export const load: PageServerLoad = async (event) => {
 		});
 	}
 	let articles = await db.article.findMany({
-		include: { author: true },
+		where: { 
+			deletedAt: null,
+		},
+		include: {
+			author: true,
+			reviews: {
+				include: {
+					reviewer: true
+				}
+			},
+		},
 		orderBy: { createdAt: 'desc' }
 	})
 	// 外部接続の場合は、外部許可の記事のみ表示
 	if (event.locals.external) {
-		articles = articles.map((article) => { article.allow_external; return article; })
+		articles = articles.filter((article) => { return article.allow_external; })
 	}
+	// レビュー担当者か投稿者本人以外で、公開期間外の場合は、表示しない
+	articles = articles.filter((article) => {
+		if (article.reviews[0]?.reviewerId != user.id && article.authorId != user.id) {
+			if (article.show_from && article.show_from > new Date()) {
+				return false;
+			}
+			if (article.show_until && article.show_until < new Date()) {
+				return false;
+			}
+			if (article.review_ok == false) {
+				return false;
+			}
+		}
+		return true;
+	})
 	return {
 		user: user,
 		articles: articles,

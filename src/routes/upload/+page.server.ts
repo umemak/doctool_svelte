@@ -66,6 +66,9 @@ export const actions: Actions = {
 				filename: file.name,
 				authorId: user.id,
 				allow_external: formData.allow_external === "on" ? true : false,
+				show_from: formData.show_from === "" ? null : new Date(formData.show_from as string),
+				show_until: formData.show_until === "" ? null : new Date(formData.show_until as string),
+				review_ok: formData.review === "on" ? false : true,
 			}
 		});
 		if (formData.review === "on") {
@@ -80,10 +83,8 @@ export const actions: Actions = {
 					}
 				}
 			});
-			// 詳細ページにリダイレクト
-			throw redirect(302, '/detail/' + formData.review_id);
 		}
-		// 一覧ページにリダイレクト
-		throw redirect(302, '/list');
+		// 詳細ページにリダイレクト
+		throw redirect(302, '/view/' + article.id);
 	}
 };

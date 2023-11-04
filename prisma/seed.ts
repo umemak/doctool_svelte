@@ -16,7 +16,29 @@ async function main() {
             password: await bcrypt.hash("password", 10)
         }
     });
-    console.log({ alice, bob })
+    const carol = await prisma.user.create({
+        data: {
+            email: "carol@example.com",
+            password: await bcrypt.hash("password", 10)
+        }
+    });
+    const article = await prisma.article.create({
+        data: {
+            title: "Test Article",
+            description: "Test Description",
+            path: "test-article",
+            authorId: alice.id,
+            allow_external: true,
+            show_from: new Date(),
+            show_until: new Date(),
+            reviews: {
+                create: {
+                    reviewerId: bob.id,
+                    body: "Test Review"
+                }
+            }
+        }
+    });
 }
 
 main()

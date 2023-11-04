@@ -34,16 +34,39 @@
 		<h1>{article.title}</h1>
 		<p>{article.description}</p>
 		<p>投稿者: {user.email}</p>
-		<p>公開日: {article.show_from}</p>
+		<p>
+			公開期間: {article.show_from ? `${new Date(article.show_from).toLocaleString()}` : '未定義'} ～
+			{article.show_until ? `${new Date(article.show_until).toLocaleString()}` : '未定義'}
+		</p>
 		<button on:click={downloadGET}>ファイルをダウンロード</button>
-		<!-- <form method="POST" action="?/download">
-            <button type="submit" name="download" value="true">ファイルをダウンロード</button>
-        </form> -->
+		<!-- レビュー担当だったら、コメントと承認／否認のフォームを表示する -->
+		{#if article.reviews[0]?.reviewerId == user.id}
+			<form method="POST" action="?/review">
+				<input type="hidden" name="articleId" value={article.id} />
+				<input type="hidden" name="reviewId" value={article.reviews[0].id} />
+				<div class="group">
+					<label for="comment">コメント</label>
+					<input type="text" name="comment" id="comment" />
+				</div>
+				<div class="group">
+					<label for="approved">承認</label>
+					<input type="checkbox" name="approved" id="approved" />
+				</div>
+				<div class="submit-container">
+					<button type="submit">レビューを送信</button>
+				</div>
+			</form>
+		{/if}
+		<!-- 投稿者だったら、削除ボタンを表示する -->
+		{#if article.authorId == user.id}
+			<form method="POST" action="?/delete">
+				<input type="hidden" name="articleId" value={article.id} />
+				<div class="submit-container">
+					<button type="submit">投稿を削除</button>
+				</div>
+			</form>
+		{/if}
 	</div>
-
-	<form method="POST" action="?/logout">
-		<button type="submit" name="logout" value="true">Logout</button>
-	</form>
 </section>
 
 <style>

@@ -25,3 +25,7 @@ restart_app:
 .PHONY: seed
 seed:
 	npx prisma db seed
+
+.PHONY: studio
+studio:
+	npx prisma studio

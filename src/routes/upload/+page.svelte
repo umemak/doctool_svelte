@@ -4,6 +4,7 @@
 	export let data: PageData;
 
 	const { users } = data;
+	let review = false;
 </script>
 
 <svelte:head>
@@ -36,24 +37,26 @@
 
 			<div class="group">
 				<label for="review">要レビュー</label>
-				<input type="checkbox" name="review" id="review" />
+				<input type="checkbox" name="review" id="review" bind:checked={review} />
 				<label for="reviewer">レビュー担当者</label>
-				<select name="reviewer" id="reviewer">
+				<select name="reviewer" id="reviewer" disabled={!review}>
 					{#each users as user}
 						<option value={user.id}>{user.email}</option>
 					{/each}
 				</select>
 			</div>
 
+			<div class="group">
+				<label for="show_from">公開開始日時</label>
+				<input type="datetime-local" name="show_from" id="show_from" />
+				<label for="show_until">公開終了日時</label>
+				<input type="datetime-local" name="show_until" id="show_until" />
+			</div>
 			<div class="submit-container">
 				<button type="submit">投稿</button>
 			</div>
 		</form>
 	</div>
-
-	<form method="POST" action="?/logout">
-		<button type="submit" name="logout" value="true">Logout</button>
-	</form>
 </section>
 
 <style>

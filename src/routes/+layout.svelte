@@ -14,6 +14,7 @@
 			<form method="POST" action="?/logout">
 				<button type="submit" name="logout" value="true">Logout</button>
 			</form>
+			<div>{data.user.email}</div>
 		{:else}
 			<a href="/signup">Sign Up</a>
 			<a href="/login">Log In</a>

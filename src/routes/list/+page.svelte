@@ -12,25 +12,34 @@
 <section>
 	<div>
 		<h1>投稿一覧</h1>
+		{#if data.articles.length == 0}
+			<p>投稿がありません</p>
+		{/if}
 		{#each data.articles as article (article.id)}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			{#if article.allow_external || !external}
 				<div class="article" on:click={() => goto(`/view/${article.id}`)}>
-					<h2>{article.title}</h2>
+					<h2>
+						{article.title}
+						{#if !article.review_ok && article.reviews[0]?.reviewerId == user.id}
+							<small>[要レビュー]</small>
+						{/if}
+						{#if !article.review_ok && article.authorId == user.id}
+							<small>[レビュー待ち]</small>
+						{/if}
+					</h2>
 					<small>
-						{article.author?.email ? `By ${article.author.email}` : 'Unknown author'}
-						{article.updatedAt && ` - ${new Date(article.updatedAt).toLocaleString()}`}
+						{article.author?.email ? `${article.author.email}` : 'Unknown author'} が
+						{article.show_from
+							? `${new Date(article.show_from).toLocaleString()} に公開`
+							: `${new Date(article.createdAt).toLocaleString()} に作成`}
 					</small>
 					<p>{@html article.description}</p>
 				</div>
 			{/if}
 		{/each}
 	</div>
-
-	<form method="POST" action="?/logout">
-		<button type="submit" name="logout" value="true">Logout</button>
-	</form>
 </section>
 
 <style>
