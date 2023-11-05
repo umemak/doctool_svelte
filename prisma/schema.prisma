@@ -11,37 +11,40 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  email     String    @unique
-  password  String
-  articles  Article[]
-  comments  Comment[]
-  likes     Like[]
-  reviews   Review[]
+  id                     String                  @id @default(cuid())
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  email                  String                  @unique
+  password               String
+  articles               Article[]
+  comments               Comment[]
+  likes                  Like[]
+  reviews                Review[]
+  adventCalendars        AdventCalendar[]
+  adventCalendarArticles AdventCalendarArticle[]
 }
 
 model Article {
-  id             String    @id @default(cuid())
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  deletedAt      DateTime?
-  title          String
-  description    String
-  author         User      @relation(fields: [authorId], references: [id])
-  authorId       String
-  path           String
-  filename       String    @default("")
-  allow_external Boolean   @default(false)
-  show_from      DateTime?
-  show_until     DateTime?
-  review_ok      Boolean   @default(false)
-  tags           Tag[]
-  tagId          String?
-  comments       Comment[]
-  likes          Like[]
-  reviews        Review[]
+  id                     String                  @id @default(cuid())
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  deletedAt              DateTime?
+  title                  String
+  description            String
+  author                 User                    @relation(fields: [authorId], references: [id])
+  authorId               String
+  path                   String
+  filename               String                  @default("")
+  allow_external         Boolean                 @default(false)
+  show_from              DateTime?
+  show_until             DateTime?
+  review_ok              Boolean                 @default(false)
+  tags                   Tag[]
+  tagId                  String?
+  comments               Comment[]
+  likes                  Like[]
+  reviews                Review[]
+  adventCalendarArticles AdventCalendarArticle[]
 }
 
 model Tag {
@@ -83,4 +86,29 @@ model Review {
   reviewer   User     @relation(fields: [reviewerId], references: [id])
   reviewerId String
   approved   Boolean  @default(false)
+}
+
+model AdventCalendar {
+  id        String                  @id @default(cuid())
+  createdAt DateTime                @default(now())
+  updatedAt DateTime                @updatedAt
+  year      Int
+  category  String
+  author    User                    @relation(fields: [authorId], references: [id])
+  authorId  String
+  articles  AdventCalendarArticle[]
+}
+
+model AdventCalendarArticle {
+  id               String         @id @default(cuid())
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  adventCalendar   AdventCalendar @relation(fields: [adventCalendarId], references: [id])
+  adventCalendarId String
+  day              Int
+  title            String
+  author           User           @relation(fields: [authorId], references: [id])
+  authorId         String
+  article          Article        @relation(fields: [articleId], references: [id])
+  articleId        String
 }

@@ -11,6 +11,7 @@
 		{#if data.user}
 			<a href="/list">投稿一覧</a>
 			<a href="/upload">投稿</a>
+			<a href="/adcal/2023/list">アドベントカレンダー2023</a>
 			<form method="POST" action="?/logout">
 				<button type="submit" name="logout" value="true">Logout</button>
 			</form>

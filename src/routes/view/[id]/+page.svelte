@@ -57,12 +57,17 @@
 				</div>
 			</form>
 		{/if}
-		<!-- 投稿者だったら、削除ボタンを表示する -->
+		<!-- 投稿者だったら、編集ボタンと削除ボタンを表示する -->
 		{#if article.authorId == user.id}
+			<form method="GET" action="/edit/{article.id}">
+				<div class="submit-container">
+					<button type="submit">🖊️ 投稿を編集</button>
+				</div>
+			</form>
 			<form method="POST" action="?/delete">
 				<input type="hidden" name="articleId" value={article.id} />
 				<div class="submit-container">
-					<button type="submit">投稿を削除</button>
+					<button type="submit">🗑️ 投稿を削除</button>
 				</div>
 			</form>
 		{/if}

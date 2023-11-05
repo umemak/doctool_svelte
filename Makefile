@@ -24,7 +24,7 @@ restart_app:
 
 .PHONY: seed
 seed:
-	npx prisma db seed
+	npx prisma db seed -- --reset
 
 .PHONY: studio
 studio:
