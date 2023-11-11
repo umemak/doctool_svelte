@@ -27,6 +27,17 @@ services:
   #       condition: service_healthy
   #   # working_dir: /home/node/app
   #   command: npm run dev -- --host
+  api:
+    build: ./api
+    volumes:
+      - ./api/.dockervenv:/src/.venv
+      - ./api:/src
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
   db:
     image: mysql:8.0
     container_name: db

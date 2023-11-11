@@ -1,8 +1,8 @@
 .PHONY: up
 up:
 	docker compose up -d --remove-orphans
-	"$(MAKE)" migrate
-	"$(MAKE)" seed
+	# "$(MAKE)" migrate
+	# "$(MAKE)" seed
 	# "$(MAKE)" app
 
 .PHONY: down
