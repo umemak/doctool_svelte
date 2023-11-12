@@ -1,5 +1,5 @@
 import type { Handle } from '@sveltejs/kit';
-import { JWT_ACCESS_SECRET, INTERNAL_ADDRESSES } from '$env/static/private';
+import { JWT_ACCESS_SECRET, INTERNAL_ADDRESSES, API_SERVER } from '$env/static/private';
 import jwt from 'jsonwebtoken';
 
 import { db } from '$lib/db';
@@ -17,16 +17,20 @@ const handle: Handle = async ({ event, resolve }) => {
 				throw new Error('Something went wrong');
 			}
 
-			const user = await db.user.findUnique({
-				where: {
-					id: jwtUser.id
-				}
+			const url = API_SERVER + '/users/' + jwtUser.id;
+			const res = await fetch(url, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				},
 			});
-
-			if (!user) {
+			if (res.status == 404) {
 				throw new Error('User not found');
 			}
-
+			if (res.status != 200) {
+				throw new Error('Something went wrong');
+			}
+			const user = await res.json();
 			const sessionUser = {
 				id: user.id,
 				email: user.email
