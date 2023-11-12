@@ -2,8 +2,6 @@ import type { Handle } from '@sveltejs/kit';
 import { JWT_ACCESS_SECRET, INTERNAL_ADDRESSES, API_SERVER } from '$env/static/private';
 import jwt from 'jsonwebtoken';
 
-import { db } from '$lib/db';
-
 const handle: Handle = async ({ event, resolve }) => {
 	const authCookie = event.cookies.get('AuthorizationToken');
 

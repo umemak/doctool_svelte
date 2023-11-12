@@ -8,5 +8,6 @@ class LoginRequest(BaseModel):
 
 class LoginResponse(BaseModel):
     access_token: str = Field(...)
+    id: str = Field(...)
     name: str = Field(...)
     email: str = Field(...)

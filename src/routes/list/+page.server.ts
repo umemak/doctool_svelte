@@ -1,6 +1,6 @@
 import type { Actions, PageServerLoad } from './$types';
 import { error, redirect } from '@sveltejs/kit';
-import { db } from '$lib/db';
+import { API_SERVER } from '$env/static/private';
 
 export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user;
@@ -10,20 +10,23 @@ export const load: PageServerLoad = async (event) => {
 			message: 'You must be logged in to view this page'
 		});
 	}
-	let articles = await db.article.findMany({
-		where: { 
-			deletedAt: null,
+	const url = API_SERVER + '/articles';
+	const res = await fetch(url, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json'
 		},
-		include: {
-			author: true,
-			reviews: {
-				include: {
-					reviewer: true
-				}
-			},
-		},
-		orderBy: { createdAt: 'desc' }
-	})
+	});
+	if (res.status == 404) {
+		return {
+			user: user,
+			articles: [],
+		};
+	}
+	if (res.status != 200) {
+		throw new Error('Something went wrong');
+	}
+	let articles = await res.json();
 	// 外部接続の場合は、外部許可の記事のみ表示
 	if (event.locals.external) {
 		articles = articles.filter((article) => { return article.allow_external; })

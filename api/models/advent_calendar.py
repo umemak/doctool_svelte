@@ -19,5 +19,5 @@ class AdventCalendar(Base):
     deleted_at = Column(DateTime, nullable=True)
     author_id = Column(UUIDType(binary=False), ForeignKey("users.id"), nullable=False)
     author = relationship("User", back_populates="advent_calendars")
-    AdventCalendarArticles = relationship("AdventCalendarArticle", back_populates="advent_calendar")
-    articles = association_proxy("AdventCalendarArticles", "article")
+    advent_calendar_articles = relationship("AdventCalendarArticle", back_populates="advent_calendar")
+    articles = association_proxy("advent_calendar_articles", "article")

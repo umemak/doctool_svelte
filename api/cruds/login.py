@@ -56,4 +56,4 @@ async def login(db: Session, request: login_schema.LoginRequest) -> login_schema
         "name": user.name,
     }
     token = jwt.encode(payload=data, key=os.getenv("JWT_SECRET"), algorithm="HS256")
-    return {"access_token": token, "name": user.name, "email": user.email}
+    return {"access_token": token, "id": str(user.id), "name": user.name, "email": user.email}

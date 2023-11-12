@@ -27,3 +27,4 @@ class Article(Base):
     comments = relationship("Comment", back_populates="article")
     likes = relationship("Like", back_populates="article")
     reviews = relationship("Review", back_populates="article")
+    advent_calendar_articles = relationship("AdventCalendarArticle", back_populates="article")
