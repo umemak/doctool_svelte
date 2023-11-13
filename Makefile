@@ -29,3 +29,11 @@ seed:
 .PHONY: studio
 studio:
 	npx prisma studio
+
+.PHONY: generate
+generate:
+	MSYS_NO_PATHCONV=1 docker run --rm \
+	-v "${PWD}:/local" openapitools/openapi-generator-cli generate \
+	-i /local/openapi.json \
+	-g typescript-fetch \
+	-o /local/src/lib/openapi/

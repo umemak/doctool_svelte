@@ -1,6 +1,7 @@
 import type { Handle } from '@sveltejs/kit';
-import { JWT_ACCESS_SECRET, INTERNAL_ADDRESSES, API_SERVER } from '$env/static/private';
+import { JWT_ACCESS_SECRET, INTERNAL_ADDRESSES } from '$env/static/private';
 import jwt from 'jsonwebtoken';
+import { api } from '$lib/api';
 
 const handle: Handle = async ({ event, resolve }) => {
 	const authCookie = event.cookies.get('AuthorizationToken');
@@ -15,20 +16,10 @@ const handle: Handle = async ({ event, resolve }) => {
 				throw new Error('Something went wrong');
 			}
 
-			const url = API_SERVER + '/users/' + jwtUser.id;
-			const res = await fetch(url, {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-			});
-			if (res.status == 404) {
-				throw new Error('User not found');
-			}
-			if (res.status != 200) {
+			const user = await api.getUserUsersIdGet({ id: jwtUser.id });
+			if (user == undefined) {
 				throw new Error('Something went wrong');
 			}
-			const user = await res.json();
 			const sessionUser = {
 				id: user.id,
 				email: user.email

@@ -1,7 +1,6 @@
 import type { PageServerLoad, Actions } from './$types';
 import { redirect, fail } from '@sveltejs/kit';
-import { loginUser } from '$lib/user.model';
-import { API_SERVER } from '$env/static/private';
+import { api } from '$lib/api';
 
 export const load: PageServerLoad = (event) => {
 	const user = event.locals.user;
@@ -22,24 +21,15 @@ export const actions: Actions = {
 		}
 
 		const { email, password } = formData as { email: string; password: string };
-		// API_SERVERの/loginをpostで呼び出す
-		const res = await fetch(API_SERVER + '/login', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ email, password })
-		});
-		// レスポンスをjsonで取得
-		const { error, access_token, name } = await res.json();
-		if (error) {
-			return fail(401, {
-				error
+		// ログイン処理
+		const resp = await api.loginLoginPost({ loginRequest: { email, password } });
+		if (resp.accessToken == undefined) {
+			return fail(400, {
+				error: 'Login failed'
 			});
 		}
-
 		// Set the cookie
-		event.cookies.set('AuthorizationToken', `Bearer ${access_token}`, {
+		event.cookies.set('AuthorizationToken', `Bearer ${resp.accessToken}`, {
 			httpOnly: true,
 			path: '/',
 			secure: true,
