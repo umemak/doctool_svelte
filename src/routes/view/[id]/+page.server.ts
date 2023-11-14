@@ -1,6 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { error, redirect } from '@sveltejs/kit';
-import { db } from '$lib/db';
+import { api } from '$lib/api';
+import type { ArticleResponse, ReviewResponse } from '$lib/openapi';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const user = locals.user;
@@ -10,35 +11,26 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 			message: 'You must be logged in to view this page'
 		});
 	}
-	let article = await db.article.findFirst({
-		where: { 
-			id: params.id,
-			deletedAt: null,
-		},
-		include: {
-			reviews: {
-				include: {
-					reviewer: true
-				}
-			},
-		},
-	})
+	let article = await api.getArticleArticlesIdGet({ id: params.id }) as ArticleResponse | undefined;
+	if (article?.deletedAt) {
+		article = undefined;
+	}
 	// 外部接続の場合は、外部許可の記事のみ表示
 	if (locals.external && article) {
-		if (article.allow_external == false) {
-			article = null;
+		if (article.allowExternal == false) {
+			article = undefined;
 		}
 	}
 	// レビュー担当者か投稿者本人以外で、公開期間外の場合は、表示しない
 	if (article?.reviews[0]?.reviewerId != user.id && article?.authorId != user.id) {
-		if (article?.show_from && article?.show_from > new Date()) {
-			article = null;
+		if (article?.showFrom && article?.showFrom > new Date()) {
+			article = undefined;
 		}
-		if (article?.show_until && article?.show_until < new Date()) {
-			article = null;
+		if (article?.showUntil && article?.showUntil < new Date()) {
+			article = undefined;
 		}
 	}
-	if (article == null) {
+	if (article === undefined) {
 		throw error(404, {
 			message: 'Article not found'
 		});
@@ -65,13 +57,7 @@ export const actions: Actions = {
 		}
 		// レビュー取得
 		const formData = Object.fromEntries(await event.request.formData());
-		const review = await db.review.findFirst({
-			where: { id: formData.reviewId.toString() },
-			include: {
-				article: true,
-			}
-		})
-
+		const review = await api.getReviewReviewsIdGet({ id: formData.reviewId }) as ReviewResponse | undefined;
 		if (review?.reviewerId != user.id) {
 			throw error(401, {
 				message: 'You must be a reviewer to view this page'
@@ -79,20 +65,16 @@ export const actions: Actions = {
 		}
 		// レビューのコメントとステータスを更新
 		let approved = formData.approved === "on" ? true : false;
-		await db.review.update({
-			where: { id: formData.reviewId.toString() },
-			data: {
-				body: formData.comment.toString(),
-				approved: approved,
-			}
-		});
+		await api.updateReviewReviewsIdPut({ id: formData.reviewId, reviewUpdate: {
+			id: formData.reviewId as string,
+			comment: formData.comment as string,
+			approved: approved,
+		}});
 		// 記事のステータスを更新
-		await db.article.update({
-			where: { id: review.articleId },
-			data: {
-				review_ok: approved,
-			}
-		});
+		await api.updateArticleArticlesIdPut({ id: review.articleId, articleUpdate: {
+			id: review.articleId,
+			reviewOk: approved,
+		}});
 		throw redirect(302, '/view/' + review.articleId);
 	},
 	delete: async (event) => {
@@ -105,22 +87,17 @@ export const actions: Actions = {
 		}
 		// 記事取得
 		const formData = Object.fromEntries(await event.request.formData());
-		const article = await db.article.findFirst({
-			where: { id: formData.articleId.toString() },
-		})
-
+		const article = await api.getArticleArticlesIdGet({ id: formData.articleId }) as ArticleResponse | undefined;
 		if (article?.authorId != user.id) {
 			throw error(401, {
 				message: 'You must be a reviewer to view this page'
 			});
 		}
 		// 記事の削除日時を更新
-		await db.article.update({
-			where: { id: formData.articleId.toString() },
-			data: {
-				deletedAt: new Date(),
-			}
-		});
+		await api.updateArticleArticlesIdPut({ id: formData.articleId.toString(), articleUpdate: {
+			id: formData.articleId.toString(),
+			deletedAt: new Date(),
+		}});
 		throw redirect(302, '/list');
 	},
 };

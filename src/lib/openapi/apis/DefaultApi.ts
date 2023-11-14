@@ -20,6 +20,8 @@ import type {
   HTTPValidationError,
   LoginRequest,
   LoginResponse,
+  ReviewCreate,
+  ReviewResponse,
   UserResponse,
 } from '../models/index';
 import {
@@ -33,12 +35,24 @@ import {
     LoginRequestToJSON,
     LoginResponseFromJSON,
     LoginResponseToJSON,
+    ReviewCreateFromJSON,
+    ReviewCreateToJSON,
+    ReviewResponseFromJSON,
+    ReviewResponseToJSON,
     UserResponseFromJSON,
     UserResponseToJSON,
 } from '../models/index';
 
 export interface CreateArticleArticlesPostRequest {
     articleCreate: ArticleCreate;
+}
+
+export interface CreateReviewReviewsPostRequest {
+    reviewCreate: ReviewCreate;
+}
+
+export interface GetReviewReviewsIdGetRequest {
+    id: string;
 }
 
 export interface GetUserUsersIdGetRequest {
@@ -88,6 +102,39 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * Create Review
+     */
+    async createReviewReviewsPostRaw(requestParameters: CreateReviewReviewsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ReviewResponse>> {
+        if (requestParameters.reviewCreate === null || requestParameters.reviewCreate === undefined) {
+            throw new runtime.RequiredError('reviewCreate','Required parameter requestParameters.reviewCreate was null or undefined when calling createReviewReviewsPost.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/reviews`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ReviewCreateToJSON(requestParameters.reviewCreate),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ReviewResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Create Review
+     */
+    async createReviewReviewsPost(requestParameters: CreateReviewReviewsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ReviewResponse> {
+        const response = await this.createReviewReviewsPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get Articles
      */
     async getArticlesArticlesGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ArticleResponse>>> {
@@ -110,6 +157,62 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async getArticlesArticlesGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ArticleResponse>> {
         const response = await this.getArticlesArticlesGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get Review
+     */
+    async getReviewReviewsIdGetRaw(requestParameters: GetReviewReviewsIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ReviewResponse>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getReviewReviewsIdGet.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/reviews/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ReviewResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Get Review
+     */
+    async getReviewReviewsIdGet(requestParameters: GetReviewReviewsIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ReviewResponse> {
+        const response = await this.getReviewReviewsIdGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get Reviews
+     */
+    async getReviewsReviewsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ReviewResponse>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/reviews`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ReviewResponseFromJSON));
+    }
+
+    /**
+     * Get Reviews
+     */
+    async getReviewsReviewsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ReviewResponse>> {
+        const response = await this.getReviewsReviewsGetRaw(initOverrides);
         return await response.value();
     }
 
@@ -140,6 +243,32 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async getUserUsersIdGet(requestParameters: GetUserUsersIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserResponse> {
         const response = await this.getUserUsersIdGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get Users
+     */
+    async getUsersUsersGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<UserResponse>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/users`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(UserResponseFromJSON));
+    }
+
+    /**
+     * Get Users
+     */
+    async getUsersUsersGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<UserResponse>> {
+        const response = await this.getUsersUsersGetRaw(initOverrides);
         return await response.value();
     }
 

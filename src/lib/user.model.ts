@@ -2,16 +2,11 @@ import { JWT_ACCESS_SECRET } from '$env/static/private';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import { db } from '$lib/db';
+import {api} from '$lib/api';
 
 const createUser = async (email: string, password: string) => {
 	// Check if user exists
-	const user = await db.user.findUnique({
-		where: {
-			email
-		}
-	});
-
+	const user = await api.getUserByEmailUsersEmailEmailGet({email: email});
 	if (user) {
 		return {
 			error: 'User already exists'
@@ -19,13 +14,10 @@ const createUser = async (email: string, password: string) => {
 	}
 
 	try {
-		const user = await db.user.create({
-			data: {
-				email,
-				password: await bcrypt.hash(password, 10)
-			}
-		});
-
+		const user = await api.createUserUsersPost({userCreate: {
+			email: email,
+			password: await bcrypt.hash(password, 10)
+		}});
 		return { user };
 	} catch (error) {
 		return {
@@ -36,12 +28,7 @@ const createUser = async (email: string, password: string) => {
 
 const loginUser = async (email: string, password: string) => {
 	// Check if user exists
-	const user = await db.user.findUnique({
-		where: {
-			email
-		}
-	});
-
+	const user = await api.getUserByEmailUsersEmailEmailGet({email: email});
 	if (!user) {
 		return {
 			error: 'Invalid credentials'

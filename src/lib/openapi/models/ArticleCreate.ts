@@ -30,7 +30,7 @@ export interface ArticleCreate {
      * @type {string}
      * @memberof ArticleCreate
      */
-    content: string;
+    description: string;
     /**
      * 
      * @type {string}
@@ -57,16 +57,16 @@ export interface ArticleCreate {
     allowExternal: boolean;
     /**
      * 
-     * @type {string}
+     * @type {Date}
      * @memberof ArticleCreate
      */
-    showFrom: string;
+    showFrom: Date | null;
     /**
      * 
-     * @type {string}
+     * @type {Date}
      * @memberof ArticleCreate
      */
-    showUntil: string;
+    showUntil: Date | null;
     /**
      * 
      * @type {boolean}
@@ -81,7 +81,7 @@ export interface ArticleCreate {
 export function instanceOfArticleCreate(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "title" in value;
-    isInstance = isInstance && "content" in value;
+    isInstance = isInstance && "description" in value;
     isInstance = isInstance && "authorId" in value;
     isInstance = isInstance && "path" in value;
     isInstance = isInstance && "filename" in value;
@@ -104,13 +104,13 @@ export function ArticleCreateFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'title': json['title'],
-        'content': json['content'],
+        'description': json['description'],
         'authorId': json['author_id'],
         'path': json['path'],
         'filename': json['filename'],
         'allowExternal': json['allow_external'],
-        'showFrom': json['show_from'],
-        'showUntil': json['show_until'],
+        'showFrom': (json['show_from'] === null ? null : new Date(json['show_from'])),
+        'showUntil': (json['show_until'] === null ? null : new Date(json['show_until'])),
         'reviewOk': json['review_ok'],
     };
 }
@@ -125,13 +125,13 @@ export function ArticleCreateToJSON(value?: ArticleCreate | null): any {
     return {
         
         'title': value.title,
-        'content': value.content,
+        'description': value.description,
         'author_id': value.authorId,
         'path': value.path,
         'filename': value.filename,
         'allow_external': value.allowExternal,
-        'show_from': value.showFrom,
-        'show_until': value.showUntil,
+        'show_from': (value.showFrom === null ? null : value.showFrom.toISOString()),
+        'show_until': (value.showUntil === null ? null : value.showUntil.toISOString()),
         'review_ok': value.reviewOk,
     };
 }

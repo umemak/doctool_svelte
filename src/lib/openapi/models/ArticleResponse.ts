@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { User } from './User';
+import {
+    UserFromJSON,
+    UserFromJSONTyped,
+    UserToJSON,
+} from './User';
+
 /**
  * 
  * @export
@@ -36,13 +43,19 @@ export interface ArticleResponse {
      * @type {string}
      * @memberof ArticleResponse
      */
-    content: string;
+    description: string;
     /**
      * 
      * @type {string}
      * @memberof ArticleResponse
      */
     authorId: string;
+    /**
+     * 
+     * @type {User}
+     * @memberof ArticleResponse
+     */
+    author: User;
     /**
      * 
      * @type {Date}
@@ -130,8 +143,9 @@ export function instanceOfArticleResponse(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "title" in value;
-    isInstance = isInstance && "content" in value;
+    isInstance = isInstance && "description" in value;
     isInstance = isInstance && "authorId" in value;
+    isInstance = isInstance && "author" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
     isInstance = isInstance && "deletedAt" in value;
@@ -161,8 +175,9 @@ export function ArticleResponseFromJSONTyped(json: any, ignoreDiscriminator: boo
         
         'id': json['id'],
         'title': json['title'],
-        'content': json['content'],
+        'description': json['description'],
         'authorId': json['author_id'],
+        'author': UserFromJSON(json['author']),
         'createdAt': (new Date(json['created_at'])),
         'updatedAt': (new Date(json['updated_at'])),
         'deletedAt': (json['deleted_at'] === null ? null : new Date(json['deleted_at'])),
@@ -190,8 +205,9 @@ export function ArticleResponseToJSON(value?: ArticleResponse | null): any {
         
         'id': value.id,
         'title': value.title,
-        'content': value.content,
+        'description': value.description,
         'author_id': value.authorId,
+        'author': UserToJSON(value.author),
         'created_at': (value.createdAt.toISOString()),
         'updated_at': (value.updatedAt.toISOString()),
         'deleted_at': (value.deletedAt === null ? null : value.deletedAt.toISOString()),

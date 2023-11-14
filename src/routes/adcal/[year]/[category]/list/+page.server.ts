@@ -1,6 +1,6 @@
 import type { Actions, PageServerLoad } from './$types';
 import { error, redirect } from '@sveltejs/kit';
-import { db } from '$lib/db';
+import { api } from '$lib/api';
 
 export const load: PageServerLoad = async (event) => {
     const user = event.locals.user;
@@ -11,26 +11,18 @@ export const load: PageServerLoad = async (event) => {
         });
     }
     // year年のadventcalendarのカテゴリーの記事一覧をarticleのdayの昇順で取得
-    const adventCalendar = await db.adventCalendar.findFirst({
-        where: {
-            year: parseInt(event.params.year, 10),
-            category: event.params.category,
-        }
-    })
+    const adventCalendar = await api.getAdventCalendarsByYearAndNameAdventCalendarsYearYearNameGet({
+        year: parseInt(event.params.year, 10),
+        name: event.params.category,
+    });
     if (!adventCalendar) {
         throw error(404, {
             message: 'Not found'
         });
     }
-    const adventCalendarArticles = await db.adventCalendarArticle.findMany({
-        where: {
-            adventCalendarId: adventCalendar.id,
-        },
-        include: {
-            author: true,
-        },
-        orderBy: { day: 'asc' }
-    })
+    const adventCalendarArticles = await api.getAdventCalendarArticlesByAdventCalendarIdAdventCalendarArticlesAdventCalendarIdAdventCalendarIdGet({ 
+        adventCalendarId: adventCalendar.id,
+    });
     return {
         year: event.params.year,
         user: user,
@@ -49,44 +41,38 @@ export const actions: Actions = {
         }
         const formData = Object.fromEntries(await event.request.formData());
         // year年のadventcalendarのカテゴリーを取得
-        const adventCalendar = await db.adventCalendar.findFirst({
-            where: {
-                year: parseInt(event.params.year, 10),
-                category: event.params.category,
-            }
-        })
-        if (!adventCalendar) {
+        const adventCalendar = await api.getAdventCalendarsByYearAndNameAdventCalendarsYearYearNameGet({
+            year: parseInt(event.params.year, 10),
+            name: event.params.category,
+        });
+            if (!adventCalendar) {
             throw error(404, {
                 message: 'Not found'
             });
         }
         // articleのdayの重複チェック
         const day = parseInt(formData.day as string, 10);
-        const adventCalendarArticle = await db.adventCalendarArticle.findFirst({
-            where: {
-                adventCalendarId: adventCalendar.id,
-                day: day,
-            }
-        })
+        const adventCalendarArticle = await api.getAdventCalendarArticlesByAcAndDayAdventCalendarArticlesAcIdDayGet({
+            adventCalendarId: adventCalendar.id,
+            day: day,
+        });
         if (adventCalendarArticle) {
             throw error(400, {
                 message: 'その日付は既に登録されています'
             });
         }
         // adventCalendarArticleとarticleの登録
-        const article = await db.article.create({
-            data: {
-                title: formData.title as string,
-                description: "",
-                path: "",
-                authorId: user.id,
-                allow_external: event.locals.external,
-                show_from: new Date(parseInt(event.params.year), 11, day, 0, 0, 0, 0),
-                show_until: null,
-            }
-        });
-        await db.adventCalendarArticle.create({
-            data: {
+        const article = await api.createArticleArticlesPost({articleCreate: {
+            title: formData.title as string,
+            description: "",
+            path: "",
+            authorId: user.id,
+            allowExternal: event.locals.external,
+            showFrom: new Date(parseInt(event.params.year), 11, day, 0, 0, 0, 0),
+            showUntil: null,
+        }});
+        await api.createAdventCalendarArticleAdventCalendarArticlesPost({
+            adventCalendarArticleCreate: {
                 adventCalendarId: adventCalendar.id,
                 articleId: article.id,
                 day: day,

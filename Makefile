@@ -32,6 +32,7 @@ studio:
 
 .PHONY: generate
 generate:
+	curl http://localhost:8000/openapi.json -o openapi.json
 	MSYS_NO_PATHCONV=1 docker run --rm \
 	-v "${PWD}:/local" openapitools/openapi-generator-cli generate \
 	-i /local/openapi.json \

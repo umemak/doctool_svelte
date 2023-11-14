@@ -1,6 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { error, redirect } from '@sveltejs/kit';
-import { db } from '$lib/db';
+import { api } from '$lib/api';
+import type { AdventCalendarResponse } from '$lib/openapi';
 
 export const load: PageServerLoad = async (event) => {
     const user = event.locals.user;
@@ -11,12 +12,7 @@ export const load: PageServerLoad = async (event) => {
         });
     }
     // year年のadventcalendarのカテゴリー一覧を取得
-    const adventCalendars = await db.adventCalendar.findMany({
-        where: {
-            year: parseInt(event.params.year, 10),
-        },
-        orderBy: { category: 'asc' }
-    })
+    const adventCalendars = await api.getAdventCalendarsByYearAdventCalendarsYearYearGet({ year: parseInt(event.params.year, 10) });
     return {
         year: event.params.year,
         user: user,
@@ -34,34 +30,23 @@ export const actions: Actions = {
         }
         const formData = Object.fromEntries(await event.request.formData());
         // year年のadventcalendarのカテゴリー一覧を取得
-        const adventCalendars = await db.adventCalendar.findMany({
-            where: {
-                year: parseInt(event.params.year, 10),
-            },
-            orderBy: { category: 'asc' }
-        })
-        // カテゴリーの重複チェック
+        const adventCalendars = await api.getAdventCalendarsByYearAdventCalendarsYearYearGet({ year: parseInt(event.params.year, 10) }) as AdventCalendarResponse[];        // カテゴリーの重複チェック
         const category = formData.category as string;
-        if (adventCalendars.some(adventCalendar => adventCalendar.category === category)) {
+        if (adventCalendars.some(adventCalendar => adventCalendar.title === category)) {
             throw error(400, {
                 message: 'カテゴリーが重複しています'
             });
         }
         // カテゴリーの登録
-        await db.adventCalendar.create({
-            data: {
+        await api.postAdventCalendarsAdventCalendarsPost({
+            adventCalendar: {
                 year: parseInt(event.params.year, 10),
-                category: category,
+                name: category,
                 authorId: user.id,
             }
         });
         // カテゴリー一覧の取得
-        const newAdventCalendars = await db.adventCalendar.findMany({
-            where: {
-                year: parseInt(event.params.year, 10),
-            },
-            orderBy: { category: 'asc' }
-        })
+        const newAdventCalendars = await api.getAdventCalendarsByYearAdventCalendarsYearYearGet({ year: parseInt(event.params.year, 10) });
         return {
             year: event.params.year,
             user: user,
