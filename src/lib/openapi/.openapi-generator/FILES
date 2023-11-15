@@ -1,3 +1,4 @@
+.openapi-generator-ignore
 apis/AdventCalendarArticlesApi.ts
 apis/AdventCalendarsApi.ts
 apis/ArticlesApi.ts
@@ -12,6 +13,7 @@ models/AdventCalendarCreate.ts
 models/AdventCalendarResponse.ts
 models/ArticleCreate.ts
 models/ArticleResponse.ts
+models/ArticleUpdate.ts
 models/HTTPValidationError.ts
 models/LoginRequest.ts
 models/LoginResponse.ts

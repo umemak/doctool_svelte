@@ -1,6 +1,6 @@
 import type { PageServerLoad, Actions } from './$types';
 import { redirect, fail } from '@sveltejs/kit';
-import { api } from '$lib/api';
+import { LoginAPI } from '$lib/api';
 
 export const load: PageServerLoad = (event) => {
 	const user = event.locals.user;
@@ -22,7 +22,7 @@ export const actions: Actions = {
 
 		const { email, password } = formData as { email: string; password: string };
 		// ログイン処理
-		const resp = await api.loginLoginPost({ loginRequest: { email, password } });
+		const resp = await LoginAPI.loginLoginPost({ loginRequest: { email, password } });
 		if (resp.accessToken == undefined) {
 			return fail(400, {
 				error: 'Login failed'

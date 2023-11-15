@@ -21,3 +21,13 @@ async def get_article(id: str, db: AsyncSession = Depends(get_db)):
 @router.post("", response_model=article_schema.ArticleResponse)
 async def create_article(article: article_schema.ArticleCreate, db: AsyncSession = Depends(get_db)):
     return await article_crud.create_article(db, article)
+
+
+@router.put("/{id}", response_model=article_schema.ArticleResponse)
+async def update_article(id: str, article: article_schema.ArticleUpdate, db: AsyncSession = Depends(get_db)):
+    return await article_crud.update_article(db, id, article)
+
+
+@router.delete("/{id}", response_model=article_schema.ArticleResponse)
+async def delete_article(id: str, db: AsyncSession = Depends(get_db)):
+    return await article_crud.delete_article(db, id)

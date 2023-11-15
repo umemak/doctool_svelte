@@ -6,7 +6,7 @@
 	const { users, article } = data;
 	let review = false;
 
-	function formatDate(date: Date) {
+	function formatDate(date: Date | null) {
 		if (!date) return '';
 		const offset = date.getTimezoneOffset();
 		const localDate = new Date(date.getTime() - offset * 60 * 1000);
@@ -49,7 +49,7 @@
 					type="checkbox"
 					name="allow_external"
 					id="allow_external"
-					bind:checked={article.allow_external}
+					bind:checked={article.allowExternal}
 				/>
 			</div>
 
@@ -70,9 +70,9 @@
 
 			<div class="group">
 				<label for="show_from">公開開始日時</label>
-				<input type="datetime-local" name="show_from" id="show_from" value={formatDate(article.show_from)} />
+				<input type="datetime-local" name="show_from" id="show_from" value={formatDate(article.showFrom)} />
 				<label for="show_until">公開終了日時</label>
-				<input type="datetime-local" name="show_until" id="show_until" value={formatDate(article.show_until)} />
+				<input type="datetime-local" name="show_until" id="show_until" value={formatDate(article.showUntil)} />
 			</div>
 			<div class="submit-container">
 				<button type="submit">更新</button>

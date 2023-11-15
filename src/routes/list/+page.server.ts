@@ -1,6 +1,6 @@
 import type { Actions, PageServerLoad } from './$types';
 import { error, redirect } from '@sveltejs/kit';
-import { api } from '$lib/api';
+import { ArticlesAPI } from '$lib/api';
 
 export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user;
@@ -10,7 +10,7 @@ export const load: PageServerLoad = async (event) => {
 			message: 'You must be logged in to view this page'
 		});
 	}
-	let articles = await api.getArticlesArticlesGet();
+	let articles = await ArticlesAPI.getArticlesArticlesGet();
 	if (articles.length == 0) {
 		return {
 			user: user,

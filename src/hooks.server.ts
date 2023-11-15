@@ -1,7 +1,7 @@
 import type { Handle } from '@sveltejs/kit';
 import { JWT_ACCESS_SECRET, INTERNAL_ADDRESSES } from '$env/static/private';
 import jwt from 'jsonwebtoken';
-import { api } from '$lib/api';
+import { UsersAPI } from '$lib/api';
 
 const handle: Handle = async ({ event, resolve }) => {
 	const authCookie = event.cookies.get('AuthorizationToken');
@@ -16,7 +16,7 @@ const handle: Handle = async ({ event, resolve }) => {
 				throw new Error('Something went wrong');
 			}
 
-			const user = await api.getUserUsersIdGet({ id: jwtUser.id });
+			const user = await UsersAPI.getUserUsersIdGet({ id: jwtUser.id });
 			if (user == undefined) {
 				throw new Error('Something went wrong');
 			}

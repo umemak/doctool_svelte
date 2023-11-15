@@ -35,8 +35,8 @@
 		<p>{article.description}</p>
 		<p>投稿者: {user.email}</p>
 		<p>
-			公開期間: {article.show_from ? `${new Date(article.show_from).toLocaleString()}` : '未定義'} ～
-			{article.show_until ? `${new Date(article.show_until).toLocaleString()}` : '未定義'}
+			公開期間: {article.showFrom ? `${new Date(article.showFrom).toLocaleString()}` : '未定義'} ～
+			{article.showUntil ? `${new Date(article.showUntil).toLocaleString()}` : '未定義'}
 		</p>
 		<button on:click={downloadGET}>ファイルをダウンロード</button>
 		<!-- レビュー担当だったら、コメントと承認／否認のフォームを表示する -->

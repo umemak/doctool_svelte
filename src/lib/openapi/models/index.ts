@@ -6,6 +6,7 @@ export * from './AdventCalendarCreate';
 export * from './AdventCalendarResponse';
 export * from './ArticleCreate';
 export * from './ArticleResponse';
+export * from './ArticleUpdate';
 export * from './HTTPValidationError';
 export * from './LoginRequest';
 export * from './LoginResponse';

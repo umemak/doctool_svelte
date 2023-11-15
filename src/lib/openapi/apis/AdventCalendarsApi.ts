@@ -40,9 +40,9 @@ export interface GetAdventCalendarsByYearAdventCalendarsYearYearGetRequest {
     year: number;
 }
 
-export interface GetAdventCalendarsByYearAndNameAdventCalendarsYearYearNameGetRequest {
+export interface GetAdventCalendarsByYearAndTitleAdventCalendarsYearYearTitleGetRequest {
     year: number;
-    name: string;
+    title: string;
 }
 
 /**
@@ -170,15 +170,15 @@ export class AdventCalendarsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get Advent Calendars By Year And Name
+     * Get Advent Calendars By Year And Title
      */
-    async getAdventCalendarsByYearAndNameAdventCalendarsYearYearNameGetRaw(requestParameters: GetAdventCalendarsByYearAndNameAdventCalendarsYearYearNameGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AdventCalendarResponse>>> {
+    async getAdventCalendarsByYearAndTitleAdventCalendarsYearYearTitleGetRaw(requestParameters: GetAdventCalendarsByYearAndTitleAdventCalendarsYearYearTitleGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AdventCalendarResponse>>> {
         if (requestParameters.year === null || requestParameters.year === undefined) {
-            throw new runtime.RequiredError('year','Required parameter requestParameters.year was null or undefined when calling getAdventCalendarsByYearAndNameAdventCalendarsYearYearNameGet.');
+            throw new runtime.RequiredError('year','Required parameter requestParameters.year was null or undefined when calling getAdventCalendarsByYearAndTitleAdventCalendarsYearYearTitleGet.');
         }
 
-        if (requestParameters.name === null || requestParameters.name === undefined) {
-            throw new runtime.RequiredError('name','Required parameter requestParameters.name was null or undefined when calling getAdventCalendarsByYearAndNameAdventCalendarsYearYearNameGet.');
+        if (requestParameters.title === null || requestParameters.title === undefined) {
+            throw new runtime.RequiredError('title','Required parameter requestParameters.title was null or undefined when calling getAdventCalendarsByYearAndTitleAdventCalendarsYearYearTitleGet.');
         }
 
         const queryParameters: any = {};
@@ -186,7 +186,7 @@ export class AdventCalendarsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/advent_calendars/year/{year}/{name}}`.replace(`{${"year"}}`, encodeURIComponent(String(requestParameters.year))).replace(`{${"name"}}`, encodeURIComponent(String(requestParameters.name))),
+            path: `/advent_calendars/year/{year}/{title}}`.replace(`{${"year"}}`, encodeURIComponent(String(requestParameters.year))).replace(`{${"title"}}`, encodeURIComponent(String(requestParameters.title))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -196,10 +196,10 @@ export class AdventCalendarsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get Advent Calendars By Year And Name
+     * Get Advent Calendars By Year And Title
      */
-    async getAdventCalendarsByYearAndNameAdventCalendarsYearYearNameGet(requestParameters: GetAdventCalendarsByYearAndNameAdventCalendarsYearYearNameGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AdventCalendarResponse>> {
-        const response = await this.getAdventCalendarsByYearAndNameAdventCalendarsYearYearNameGetRaw(requestParameters, initOverrides);
+    async getAdventCalendarsByYearAndTitleAdventCalendarsYearYearTitleGet(requestParameters: GetAdventCalendarsByYearAndTitleAdventCalendarsYearYearTitleGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AdventCalendarResponse>> {
+        const response = await this.getAdventCalendarsByYearAndTitleAdventCalendarsYearYearTitleGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

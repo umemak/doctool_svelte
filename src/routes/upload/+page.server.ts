@@ -4,7 +4,7 @@ import { s3 } from '$lib/s3';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { AWS_ENDPOINT, S3_BUCKET_NAME } from '$env/static/private';
 import { ulid } from 'ulid'
-import { api } from '$lib/api';
+import { UsersAPI, ArticlesAPI, ReviewsAPI } from '$lib/api';
 import type { UserResponse } from '$lib/openapi';
 
 export const load: PageServerLoad = async (event) => {
@@ -15,7 +15,7 @@ export const load: PageServerLoad = async (event) => {
 			message: 'You must be logged in to view this page'
 		});
 	}
-	let users = await api.getUsersUsersGet() as UserResponse[];
+	let users = await UsersAPI.getUsersUsersGet() as UserResponse[];
 	// ログインユーザーを除外
 	users = users.filter(u => u.id !== user.id);
 	return {
@@ -60,7 +60,7 @@ export const actions: Actions = {
 			console.error(err);
 		}
 		// データベースに登録
-		const article = await api.createArticleArticlesPost({articleCreate: {
+		const article = await ArticlesAPI.createArticleArticlesPost({articleCreate: {
 			title: formData.title as string,
 			description: formData.description as string,
 			path: objPath,
@@ -72,9 +72,10 @@ export const actions: Actions = {
 			reviewOk: formData.review === "on" ? false : true,
 		}});
 		if (formData.review === "on") {
-			const review = await api.createReviewReviewsPost({reviewCreate:{
+			const review = await ReviewsAPI.createReviewReviewsPost({reviewCreate:{
 				reviewerId: formData.reviewer as string,
 				articleId: article.id,
+				comment: "",
 			}})
 		}
 		// 詳細ページにリダイレクト

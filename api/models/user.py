@@ -22,4 +22,4 @@ class User(Base):
     advent_calendars = relationship("AdventCalendar", back_populates="author")
     comments = relationship("Comment", back_populates="author")
     likes = relationship("Like", back_populates="author")
-    reviews = relationship("Review", back_populates="author")
+    reviews = relationship("Review", back_populates="author", foreign_keys="Review.author_id")

@@ -1,12 +1,11 @@
 from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 from datetime import datetime
-
-
+from .user import UserResponse
 
 class ArticleCreate(BaseModel):
     title: str = Field(..., max_length=50, example="title")
-    description: str = Field(..., max_length=50, example="content")
+    description: str = Field(..., max_length=50, example="description")
     author_id: str = Field(..., max_length=50, example="author_id")
     path: str = Field(..., max_length=50, example="path")
     filename: str = Field(..., max_length=50, example="filename")
@@ -17,24 +16,28 @@ class ArticleCreate(BaseModel):
 
     model_config = ConfigDict(form_attributes=True)
 
-class User(BaseModel):
+
+class ArticleUpdate(BaseModel):
     id: str = Field(..., max_length=50, example="id")
-    name: str = Field(..., max_length=50, example="name")
-    email: str = Field(..., max_length=50, example="email")
-    password: str = Field(..., max_length=50, example="password")
-    role: str = Field(..., max_length=50, example="role")
-    created_at: str = Field(..., example="2023-11-12 00:00:00")
-    updated_at: str = Field(..., example="2023-11-12 00:00:00")
-    deleted_at: str = Field(..., example="2023-11-12 00:00:00")
+    title: str = Field(..., max_length=50, example="title")
+    description: str = Field(..., max_length=50, example="description")
+    author_id: str = Field(..., max_length=50, example="author_id")
+    path: Optional[str] = Field(..., max_length=50, example="path")
+    filename: Optional[str] = Field(..., max_length=50, example="filename")
+    allow_external: bool = Field(..., example=True)
+    show_from: Optional[datetime] = Field(..., example="2023-11-12 00:00:00")
+    show_until: Optional[datetime] = Field(..., example="2099-12-31 23:59:59")
+    review_ok: Optional[bool] = Field(..., example=True)
 
     model_config = ConfigDict(form_attributes=True)
+
 
 class ArticleResponse(BaseModel):
     id: str = Field(...)
     title: str = Field(...)
     description: str = Field(...)
     author_id: str = Field(...)
-    author: User = Field(...)
+    # author: UserResponse = Field(...)
     created_at: datetime = Field(...)
     updated_at: datetime = Field(...)
     deleted_at: Optional[datetime] = Field(...)
@@ -48,5 +51,77 @@ class ArticleResponse(BaseModel):
     comments: list = Field(...)
     likes: list = Field(...)
     reviews: list = Field(...)
+
+    model_config = ConfigDict(form_attributes=True)
+
+
+class ArticleCommentResponse(BaseModel):
+    id: str = Field(...)
+    title: str = Field(...)
+    description: str = Field(...)
+    author_id: str = Field(...)
+
+    model_config = ConfigDict(form_attributes=True)
+
+
+class ArticleLikeResponse(BaseModel):
+    id: str = Field(...)
+    title: str = Field(...)
+    description: str = Field(...)
+    author_id: str = Field(...)
+
+    model_config = ConfigDict(form_attributes=True)
+
+
+class ArticleReviewResponse(BaseModel):
+    id: str = Field(...)
+    title: str = Field(...)
+    description: str = Field(...)
+    author_id: str = Field(...)
+
+    model_config = ConfigDict(form_attributes=True)
+
+
+class ArticleTagResponse(BaseModel):
+    id: str = Field(...)
+    title: str = Field(...)
+    description: str = Field(...)
+    author_id: str = Field(...)
+
+    model_config = ConfigDict(form_attributes=True)
+
+
+class ArticleAuthorResponse(BaseModel):
+    id: str = Field(...)
+    title: str = Field(...)
+    description: str = Field(...)
+    author_id: str = Field(...)
+
+    model_config = ConfigDict(form_attributes=True)
+
+
+class ArticleAdventCalendarResponse(BaseModel):
+    id: str = Field(...)
+    title: str = Field(...)
+    description: str = Field(...)
+    author_id: str = Field(...)
+
+    model_config = ConfigDict(form_attributes=True)
+
+
+class ArticleAdventCalendarArticleResponse(BaseModel):
+    id: str = Field(...)
+    title: str = Field(...)
+    description: str = Field(...)
+    author_id: str = Field(...)
+
+    model_config = ConfigDict(form_attributes=True)
+
+
+class ArticleAdventCalendarAuthorResponse(BaseModel):
+    id: str = Field(...)
+    title: str = Field(...)
+    description: str = Field(...)
+    author_id: str = Field(...)
 
     model_config = ConfigDict(form_attributes=True)

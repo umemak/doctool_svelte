@@ -2,7 +2,7 @@ import { error } from '@sveltejs/kit';
 import { s3 } from '$lib/s3';
 import { GetObjectCommand } from '@aws-sdk/client-s3';
 import { S3_BUCKET_NAME } from '$env/static/private';
-import { api } from '$lib/api';
+import { ArticlesAPI } from '$lib/api';
 import type { ArticleResponse } from '$lib/openapi';
 
 export const GET = async ({ locals, params }) => {
@@ -13,7 +13,7 @@ export const GET = async ({ locals, params }) => {
 			message: 'You must be logged in to view this page'
 		});
 	}
-	let article = await api.getArticleArticlesIdGet({ id: params.id }) as ArticleResponse | undefined;
+	let article = await ArticlesAPI.getArticleArticlesIdGet({ id: params.id }) as ArticleResponse | undefined;
 	// 外部接続の場合は、外部許可の記事のみ表示
 	if (locals.external && article) {
 		if (article.allowExternal == false) {

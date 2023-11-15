@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ArticleCreate,
   ArticleResponse,
+  ArticleUpdate,
   HTTPValidationError,
 } from '../models/index';
 import {
@@ -24,6 +25,8 @@ import {
     ArticleCreateToJSON,
     ArticleResponseFromJSON,
     ArticleResponseToJSON,
+    ArticleUpdateFromJSON,
+    ArticleUpdateToJSON,
     HTTPValidationErrorFromJSON,
     HTTPValidationErrorToJSON,
 } from '../models/index';
@@ -32,8 +35,17 @@ export interface CreateArticleArticlesPostRequest {
     articleCreate: ArticleCreate;
 }
 
+export interface DeleteArticleArticlesIdDeleteRequest {
+    id: string;
+}
+
 export interface GetArticleArticlesIdGetRequest {
     id: string;
+}
+
+export interface UpdateArticleArticlesIdPutRequest {
+    id: string;
+    articleUpdate: ArticleUpdate;
 }
 
 /**
@@ -71,6 +83,36 @@ export class ArticlesApi extends runtime.BaseAPI {
      */
     async createArticleArticlesPost(requestParameters: CreateArticleArticlesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ArticleResponse> {
         const response = await this.createArticleArticlesPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Delete Article
+     */
+    async deleteArticleArticlesIdDeleteRaw(requestParameters: DeleteArticleArticlesIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ArticleResponse>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteArticleArticlesIdDelete.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/articles/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ArticleResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Delete Article
+     */
+    async deleteArticleArticlesIdDelete(requestParameters: DeleteArticleArticlesIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ArticleResponse> {
+        const response = await this.deleteArticleArticlesIdDeleteRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -127,6 +169,43 @@ export class ArticlesApi extends runtime.BaseAPI {
      */
     async getArticlesArticlesGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ArticleResponse>> {
         const response = await this.getArticlesArticlesGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Update Article
+     */
+    async updateArticleArticlesIdPutRaw(requestParameters: UpdateArticleArticlesIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ArticleResponse>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateArticleArticlesIdPut.');
+        }
+
+        if (requestParameters.articleUpdate === null || requestParameters.articleUpdate === undefined) {
+            throw new runtime.RequiredError('articleUpdate','Required parameter requestParameters.articleUpdate was null or undefined when calling updateArticleArticlesIdPut.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/articles/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ArticleUpdateToJSON(requestParameters.articleUpdate),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ArticleResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Update Article
+     */
+    async updateArticleArticlesIdPut(requestParameters: UpdateArticleArticlesIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ArticleResponse> {
+        const response = await this.updateArticleArticlesIdPutRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

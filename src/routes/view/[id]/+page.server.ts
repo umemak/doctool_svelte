@@ -1,6 +1,6 @@
 import type { Actions, PageServerLoad } from './$types';
 import { error, redirect } from '@sveltejs/kit';
-import { api } from '$lib/api';
+import { ArticlesAPI, ReviewsAPI } from '$lib/api';
 import type { ArticleResponse, ReviewResponse } from '$lib/openapi';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 			message: 'You must be logged in to view this page'
 		});
 	}
-	let article = await api.getArticleArticlesIdGet({ id: params.id }) as ArticleResponse | undefined;
+	let article = await ArticlesAPI.getArticleArticlesIdGet({ id: params.id }) as ArticleResponse | undefined;
 	if (article?.deletedAt) {
 		article = undefined;
 	}
@@ -57,7 +57,7 @@ export const actions: Actions = {
 		}
 		// レビュー取得
 		const formData = Object.fromEntries(await event.request.formData());
-		const review = await api.getReviewReviewsIdGet({ id: formData.reviewId }) as ReviewResponse | undefined;
+		const review = await ReviewsAPI.getReviewReviewsIdGet({ id: formData.reviewId as string }) as ReviewResponse | undefined;
 		if (review?.reviewerId != user.id) {
 			throw error(401, {
 				message: 'You must be a reviewer to view this page'
@@ -65,14 +65,23 @@ export const actions: Actions = {
 		}
 		// レビューのコメントとステータスを更新
 		let approved = formData.approved === "on" ? true : false;
-		await api.updateReviewReviewsIdPut({ id: formData.reviewId, reviewUpdate: {
+		await ReviewsAPI.updateReviewReviewsIdPut({ id: formData.reviewId as string, reviewUpdate: {
 			id: formData.reviewId as string,
 			comment: formData.comment as string,
 			approved: approved,
 		}});
 		// 記事のステータスを更新
-		await api.updateArticleArticlesIdPut({ id: review.articleId, articleUpdate: {
+		const article = await ArticlesAPI.getArticleArticlesIdGet({ id: review.articleId }) as ArticleResponse;
+		await ArticlesAPI.updateArticleArticlesIdPut({ id: review.articleId, articleUpdate: {
 			id: review.articleId,
+			title: article.title,
+			description: article.description,
+			path: article.path,
+			filename: article.filename,
+			authorId: article.authorId,
+			allowExternal: article.allowExternal,
+			showFrom: article.showFrom,
+			showUntil: article.showUntil,
 			reviewOk: approved,
 		}});
 		throw redirect(302, '/view/' + review.articleId);
@@ -87,17 +96,14 @@ export const actions: Actions = {
 		}
 		// 記事取得
 		const formData = Object.fromEntries(await event.request.formData());
-		const article = await api.getArticleArticlesIdGet({ id: formData.articleId }) as ArticleResponse | undefined;
+		const article = await ArticlesAPI.getArticleArticlesIdGet({ id: formData.articleId as string }) as ArticleResponse | undefined;
 		if (article?.authorId != user.id) {
 			throw error(401, {
 				message: 'You must be a reviewer to view this page'
 			});
 		}
 		// 記事の削除日時を更新
-		await api.updateArticleArticlesIdPut({ id: formData.articleId.toString(), articleUpdate: {
-			id: formData.articleId.toString(),
-			deletedAt: new Date(),
-		}});
+		await ArticlesAPI.deleteArticleArticlesIdDelete({ id: formData.articleId.toString()});
 		throw redirect(302, '/list');
 	},
 };

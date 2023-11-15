@@ -4,7 +4,7 @@ import { s3 } from '$lib/s3';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { AWS_ENDPOINT, S3_BUCKET_NAME } from '$env/static/private';
 import { ulid } from 'ulid'
-import { api } from '$lib/api';
+import { ArticlesAPI, UsersAPI,ReviewsAPI } from '$lib/api';
 import type { ArticleResponse, UserResponse } from '$lib/openapi';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		});
 	}
 	// 指定idのarticleをレビュー情報も含めて取得する	
-	let article = await api.getArticleArticlesIdGet({ id: params.id }) as ArticleResponse | undefined;
+	let article = await ArticlesAPI.getArticleArticlesIdGet({ id: params.id }) as ArticleResponse | undefined;
 	// let article = await db.article.findFirst({
 	// 	where: {
 	// 		id: params.id,
@@ -50,7 +50,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 			message: 'Article not found'
 		});
 	}
-	let users = await api.getUsersUsersGet() as UserResponse[];
+	let users = await UsersAPI.getUsersUsersGet() as UserResponse[];
 	// ログインユーザーを除外
 	users = users.filter(u => u.id !== user.id);
 	return {
@@ -99,31 +99,38 @@ export const actions: Actions = {
 				console.error(err);
 			}
 			// データベースを更新
-			await api.articleUpdateArticlesIdPut({ id: articleId, articleUpdate: {
+			await ArticlesAPI.updateArticleArticlesIdPut({ id: articleId, articleUpdate: {
 				id: articleId,
 				title: formData.title as string,
 				description: formData.description as string,
+				authorId: user.id,
 				path: objPath,
 				filename: file.name,
 				allowExternal: formData.allow_external === "on" ? true : false,
 				showFrom: formData.show_from === "" ? null : new Date(formData.show_from as string),
 				showUntil: formData.show_until === "" ? null : new Date(formData.show_until as string),
+				reviewOk: formData.review_ok === "on" ? true : false,
 			}});
 		} else {
 			// データベースを更新
-			await api.articleUpdateArticlesIdPut({ id: articleId, articleUpdate: {
+			await ArticlesAPI.updateArticleArticlesIdPut({ id: articleId, articleUpdate: {
 				id: articleId,
 				title: formData.title as string,
 				description: formData.description as string,
+				authorId: user.id,
+				path: formData.path as string,
+				filename: formData.filename as string,
 				allowExternal: formData.allow_external === "on" ? true : false,
 				showFrom: formData.show_from === "" ? null : new Date(formData.show_from as string),
 				showUntil: formData.show_until === "" ? null : new Date(formData.show_until as string),
+				reviewOk: formData.review_ok === "on" ? true : false,
 			}});
 		}
 		if (formData.review === "on") {
-			await api.reviewCreateReviewsPost({reviewCreate:{
+			await ReviewsAPI.createReviewReviewsPost({reviewCreate:{
 				reviewerId: formData.reviewer as string,
 				articleId: articleId,
+				comment: "",
 			}})
 		}
 		// 詳細ページにリダイレクト

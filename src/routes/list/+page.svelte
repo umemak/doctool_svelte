@@ -18,21 +18,21 @@
 		{#each data.articles as article (article.id)}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
-			{#if article.allow_external || !external}
+			{#if article.allowExternal || !external}
 				<div class="article" on:click={() => goto(`/view/${article.id}`)}>
 					<h2>
 						{article.title}
-						{#if !article.review_ok && article.reviews[0]?.reviewerId == user.id}
+						{#if !article.reviewOk && article.reviews[0]?.reviewerId == user.id}
 							<small>[要レビュー]</small>
 						{/if}
-						{#if !article.review_ok && article.authorId == user.id}
+						{#if !article.reviewOk && article.authorId == user.id}
 							<small>[レビュー待ち]</small>
 						{/if}
 					</h2>
 					<small>
 						{article.author?.email ? `${article.author.email}` : 'Unknown author'} が
-						{article.show_from
-							? `${new Date(article.show_from).toLocaleString()} に公開`
+						{article.showFrom
+							? `${new Date(article.showFrom).toLocaleString()} に公開`
 							: `${new Date(article.createdAt).toLocaleString()} に作成`}
 					</small>
 					<p>{@html article.description}</p>
@@ -45,10 +45,6 @@
 <style>
 	section > * {
 		margin-bottom: 2rem;
-	}
-
-	form button {
-		width: fit-content;
 	}
 
 	div {

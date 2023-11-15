@@ -32,13 +32,47 @@ async def create_review(db: Session, review_create: review_schema.ReviewCreate) 
     return review
 
 
-async def update_review(db: Session, review_update: review_schema.ReviewUpdate) -> review_schema.ReviewResponse:
-    review = db.query(review_model).filter(review_model.id == review_update.id).first()
+async def update_review(db: Session, id: str, review_update: review_schema.ReviewUpdate) -> review_schema.ReviewResponse:
+    review = db.query(review_model).filter(review_model.id == id).first()
     if review:
         review.comment = review_update.comment
         review.approved = review_update.approved
         db.commit()
         db.refresh(review)
         return review
+    else:
+        return {"error": "review not found"}
+
+
+async def delete_review(db: Session, id: str) -> review_schema.ReviewResponse:
+    review = db.query(review_model).filter(review_model.id == id).first()
+    if review:
+        review.deleted_at = datetime.datetime.now()
+        db.commit()
+        db.refresh(review)
+        return review
+    else:
+        return {"error": "review not found"}
+
+
+async def restore_review(db: Session, id: str) -> review_schema.ReviewResponse:
+    review = db.query(review_model).filter(review_model.id == id).first()
+    if review:
+        review.deleted_at = None
+        db.commit()
+        db.refresh(review)
+        return review
+    else:
+        return {"error": "review not found"}
+
+
+async def get_reviewer(db: Session, id: str) -> review_schema.ReviewerResponse:
+    review = db.query(review_model).filter(review_model.id == id).first()
+    if review:
+        return {
+            "id": str(review.id),
+            "email": review.email,
+            "name": review.name,
+        }
     else:
         return {"error": "review not found"}

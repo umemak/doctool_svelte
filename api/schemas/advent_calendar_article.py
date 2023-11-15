@@ -13,6 +13,17 @@ class AdventCalendarArticleCreate(BaseModel):
     model_config = ConfigDict(form_attributes=True)
 
 
+class AdventCalendarArticleUpdate(BaseModel):
+    id: str = Field(...)
+    advent_calendar_id: str = Field(...)
+    day: int = Field(...)
+    title: str = Field(...)
+    article_id: str = Field(...)
+    author_id: str = Field(...)
+
+    model_config = ConfigDict(form_attributes=True)
+
+
 class AdventCalendarArticleResponse(BaseModel):
     id: str = Field(...)
     advent_calendar_id: str = Field(...)

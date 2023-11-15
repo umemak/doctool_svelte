@@ -13,28 +13,24 @@ down:
 app:
 	npm run dev
 
-.PHONY: migrate
-migrate:
-	npx prisma db push
-	npx prisma generate
+.PHONY: api
+api:
+	"$(MAKE)" -C ./api dev
 
 .PHONY: restart_app
 restart_app:
 	docker compose restart app
 
-.PHONY: seed
-seed:
-	npx prisma db seed -- --reset
-
-.PHONY: studio
-studio:
-	npx prisma studio
-
 .PHONY: generate
 generate:
 	curl http://localhost:8000/openapi.json -o openapi.json
+	rm -rf src/lib/openapi
 	MSYS_NO_PATHCONV=1 docker run --rm \
 	-v "${PWD}:/local" openapitools/openapi-generator-cli generate \
 	-i /local/openapi.json \
 	-g typescript-fetch \
 	-o /local/src/lib/openapi/
+
+.PHONY: migrate
+migrate:
+	"$(MAKE)" -C ./api migrate

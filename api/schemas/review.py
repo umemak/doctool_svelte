@@ -10,10 +10,14 @@ class ReviewCreate(BaseModel):
 
     model_config = ConfigDict(form_attributes=True)
 
+
 class ReviewUpdate(BaseModel):
     id: str = Field(...)
     comment: str = Field(...)
     approved: bool = Field(...)
+
+    model_config = ConfigDict(form_attributes=True)
+
 
 class ReviewResponse(BaseModel):
     id: str = Field(...)
@@ -24,5 +28,14 @@ class ReviewResponse(BaseModel):
     reviewer_id: str = Field(...)
     article_id: str = Field(...)
     approved: bool = Field(...)
+
+    model_config = ConfigDict(form_attributes=True)
+
+
+class ReviewerResponse(BaseModel):
+    id: str = Field(...)
+    name: str = Field(...)
+    description: str = Field(...)
+    author_id: str = Field(...)
 
     model_config = ConfigDict(form_attributes=True)

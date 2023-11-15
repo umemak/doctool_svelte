@@ -11,7 +11,7 @@ class Article(Base):
 
     id = Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
     title = Column(String(255), nullable=False)
-    content = Column(Text, nullable=False)
+    description = Column(Text, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.now)
     updated_at = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
     deleted_at = Column(DateTime, nullable=True)

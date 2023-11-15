@@ -23,6 +23,6 @@ async def create_review(review: review_schema.ReviewCreate, db: AsyncSession = D
     return await review_crud.create_review(db, review)
 
 
-@router.put("", response_model=review_schema.ReviewResponse)
-async def update_review(review: review_schema.ReviewUpdate, db: AsyncSession = Depends(get_db)):
-    return await review_crud.update_review(db, review)
+@router.put("/{id}", response_model=review_schema.ReviewResponse)
+async def update_review(id:str, review: review_schema.ReviewUpdate, db: AsyncSession = Depends(get_db)):
+    return await review_crud.update_review(db, id, review)

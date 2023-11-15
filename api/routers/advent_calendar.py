@@ -17,9 +17,9 @@ async def get_advent_calendars(db: AsyncSession = Depends(get_db)):
 async def get_advent_calendars_by_year(year: int, db: AsyncSession = Depends(get_db)):
     return await advent_calendar_crud.get_advent_calendars_by_year(db, year)
 
-@router.get("/year/{year}/{name}}", response_model=list[advent_calendar_schema.AdventCalendarResponse])
-async def get_advent_calendars_by_year_and_name(year: int, name: str, db: AsyncSession = Depends(get_db)):
-    return await advent_calendar_crud.get_advent_calendars_by_year_and_name(db, year, name)
+@router.get("/year/{year}/{title}}", response_model=list[advent_calendar_schema.AdventCalendarResponse])
+async def get_advent_calendars_by_year_and_title(year: int, title: str, db: AsyncSession = Depends(get_db)):
+    return await advent_calendar_crud.get_advent_calendars_by_year_and_title(db, year, title)
 
 
 @router.get("/{id}", response_model=advent_calendar_schema.AdventCalendarResponse)

@@ -39,7 +39,8 @@ export interface GetReviewReviewsIdGetRequest {
     id: string;
 }
 
-export interface UpdateReviewReviewsPutRequest {
+export interface UpdateReviewReviewsIdPutRequest {
+    id: string;
     reviewUpdate: ReviewUpdate;
 }
 
@@ -140,9 +141,13 @@ export class ReviewsApi extends runtime.BaseAPI {
     /**
      * Update Review
      */
-    async updateReviewReviewsPutRaw(requestParameters: UpdateReviewReviewsPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ReviewResponse>> {
+    async updateReviewReviewsIdPutRaw(requestParameters: UpdateReviewReviewsIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ReviewResponse>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateReviewReviewsIdPut.');
+        }
+
         if (requestParameters.reviewUpdate === null || requestParameters.reviewUpdate === undefined) {
-            throw new runtime.RequiredError('reviewUpdate','Required parameter requestParameters.reviewUpdate was null or undefined when calling updateReviewReviewsPut.');
+            throw new runtime.RequiredError('reviewUpdate','Required parameter requestParameters.reviewUpdate was null or undefined when calling updateReviewReviewsIdPut.');
         }
 
         const queryParameters: any = {};
@@ -152,7 +157,7 @@ export class ReviewsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/reviews`,
+            path: `/reviews/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -165,8 +170,8 @@ export class ReviewsApi extends runtime.BaseAPI {
     /**
      * Update Review
      */
-    async updateReviewReviewsPut(requestParameters: UpdateReviewReviewsPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ReviewResponse> {
-        const response = await this.updateReviewReviewsPutRaw(requestParameters, initOverrides);
+    async updateReviewReviewsIdPut(requestParameters: UpdateReviewReviewsIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ReviewResponse> {
+        const response = await this.updateReviewReviewsIdPutRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
