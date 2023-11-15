@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from models.article import Article
 import schemas.article as article_schema
+import schemas.user as user_schema
 from typing import List
 
 
@@ -13,7 +14,11 @@ async def get_articles(db: Session) -> List[article_schema.ArticleResponse]:
             "title": article.title,
             "description": article.description,
             "author_id": str(article.author_id),
-            # "author": article.author,
+            "author": user_schema.UserResponse(
+                id=str(article.author.id),
+                name=article.author.name,
+                email=article.author.email,
+            ),
             "created_at": article.created_at,
             "updated_at": article.updated_at,
             "deleted_at": article.deleted_at,
@@ -32,7 +37,9 @@ async def get_articles(db: Session) -> List[article_schema.ArticleResponse]:
     ]
 
 
-async def create_article(db: Session, article_create: article_schema.ArticleCreate) -> article_schema.ArticleResponse:
+async def create_article(
+    db: Session, article_create: article_schema.ArticleCreate
+) -> article_schema.ArticleResponse:
     article = Article(**article_create.dict())
     db.add(article)
     db.commit()
@@ -42,6 +49,11 @@ async def create_article(db: Session, article_create: article_schema.ArticleCrea
         "title": article.title,
         "description": article.description,
         "author_id": str(article.author_id),
+        "author": user_schema.UserResponse(
+            id=str(article.author.id),
+            name=article.author.name,
+            email=article.author.email,
+        ),
         "created_at": article.created_at,
         "updated_at": article.updated_at,
         "deleted_at": article.deleted_at,
@@ -66,6 +78,11 @@ async def get_article(db: Session, id: str) -> article_schema.ArticleResponse:
             "title": article.title,
             "description": article.description,
             "author_id": str(article.author_id),
+            "author": user_schema.UserResponse(
+                id=str(article.author.id),
+                name=article.author.name,
+                email=article.author.email,
+            ),
             "created_at": article.created_at,
             "updated_at": article.updated_at,
             "deleted_at": article.deleted_at,
@@ -102,6 +119,11 @@ async def update_article(db: Session, article_update: article_schema.ArticleUpda
             "title": article.title,
             "description": article.description,
             "author_id": str(article.author_id),
+            "author": user_schema.UserResponse(
+                id=str(article.author.id),
+                name=article.author.name,
+                email=article.author.email,
+            ),
             "created_at": article.created_at,
             "updated_at": article.updated_at,
             "deleted_at": article.deleted_at,
@@ -131,6 +153,11 @@ async def delete_article(db: Session, id: str) -> article_schema.ArticleResponse
             "title": article.title,
             "description": article.description,
             "author_id": str(article.author_id),
+            "author": user_schema.UserResponse(
+                id=str(article.author.id),
+                name=article.author.name,
+                email=article.author.email,
+            ),
             "created_at": article.created_at,
             "updated_at": article.updated_at,
             "deleted_at": article.deleted_at,
@@ -160,6 +187,11 @@ async def restore_article(db: Session, id: str) -> article_schema.ArticleRespons
             "title": article.title,
             "description": article.description,
             "author_id": str(article.author_id),
+            "author": user_schema.UserResponse(
+                id=str(article.author.id),
+                name=article.author.name,
+                email=article.author.email,
+            ),
             "created_at": article.created_at,
             "updated_at": article.updated_at,
             "deleted_at": article.deleted_at,

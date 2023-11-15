@@ -1,7 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { s3 } from '$lib/s3';
-import { GetObjectCommand } from '@aws-sdk/client-s3';
-import { S3_BUCKET_NAME } from '$env/static/private';
+import { download } from '$lib/s3';
 import { ArticlesAPI } from '$lib/api';
 import type { ArticleResponse } from '$lib/openapi';
 
@@ -26,20 +24,5 @@ export const GET = async ({ locals, params }) => {
 		});
 	}
 	// S3からダウンロード
-	const command = new GetObjectCommand({
-		Bucket: S3_BUCKET_NAME,
-		Key: article.path,
-	});
-	try {
-		const response = await s3.send(command);
-		return new Response(response.Body?.transformToWebStream(),
-			{
-				headers: {
-					"Content-Type": "application/octet-stream",
-					"Content-Disposition": "attachement; filename=" + article.title,
-				}
-			});
-	} catch (err) {
-		console.error(err);
-	}
+	return await download(article.path, article.title);
 };

@@ -42,11 +42,6 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 };
 
 export const actions: Actions = {
-	logout: async (event) => {
-		event.cookies.delete('AuthorizationToken');
-
-		throw redirect(302, '/login');
-	},
 	review: async (event) => {
 		// レビュー担当者のみ
 		const user = event.locals.user;

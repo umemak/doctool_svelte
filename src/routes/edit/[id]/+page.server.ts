@@ -1,9 +1,6 @@
 import type { Actions, PageServerLoad } from './$types';
 import { error, redirect } from '@sveltejs/kit';
-import { s3 } from '$lib/s3';
-import { PutObjectCommand } from '@aws-sdk/client-s3';
-import { AWS_ENDPOINT, S3_BUCKET_NAME } from '$env/static/private';
-import { ulid } from 'ulid'
+import { upload } from '$lib/s3';
 import { ArticlesAPI, UsersAPI,ReviewsAPI } from '$lib/api';
 import type { ArticleResponse, UserResponse } from '$lib/openapi';
 
@@ -60,11 +57,6 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 };
 
 export const actions: Actions = {
-	logout: async (event) => {
-		event.cookies.delete('AuthorizationToken');
-
-		throw redirect(302, '/login');
-	},
 	update: async (event) => {
 		const user = event.locals.user;
 		if (!user) {
@@ -79,25 +71,7 @@ export const actions: Actions = {
 		const file = formData.file as File;
 		if (file.name != 'undefined') {
 			// S3にアップロード
-			let objPath = "";
-			if (AWS_ENDPOINT === "") {
-				// S3
-				objPath = ulid().toLowerCase();
-			} else {
-				// MinIO
-				objPath = S3_BUCKET_NAME + "/" + ulid().toLowerCase();
-			}
-			const command = new PutObjectCommand({
-				Bucket: S3_BUCKET_NAME,
-				Key: objPath,
-				Body: Buffer.from(await file.arrayBuffer())
-			});
-			try {
-				const response = await s3.send(command);
-				console.log(response);
-			} catch (err) {
-				console.error(err);
-			}
+			const objPath = await upload(file);
 			// データベースを更新
 			await ArticlesAPI.updateArticleArticlesIdPut({ id: articleId, articleUpdate: {
 				id: articleId,

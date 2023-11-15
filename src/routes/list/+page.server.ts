@@ -41,11 +41,3 @@ export const load: PageServerLoad = async (event) => {
 		articles: articles,
 	};
 };
-
-export const actions: Actions = {
-	logout: async (event) => {
-		event.cookies.delete('AuthorizationToken');
-
-		throw redirect(302, '/login');
-	}
-};
