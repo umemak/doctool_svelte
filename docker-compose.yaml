@@ -33,6 +33,11 @@ services:
       context: ./api
       dockerfile: Dockerfile.local
     container_name: api
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
     volumes:
       - ./api/.dockervenv:/src/.venv
       - ./api:/src
