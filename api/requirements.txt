@@ -369,6 +369,9 @@ pydantic-core==2.10.1 ; python_version >= "3.9" and python_version < "4.0" \
 pydantic==2.4.2 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:94f336138093a5d7f426aac732dcfe7ab4eb4da243c88f891d65deb4a2556ee7 \
     --hash=sha256:bc3ddf669d234f4220e6e1c4d96b061abe0998185a8d7855c0126782b7abc8c1
+pyjwt==2.8.0 ; python_version >= "3.9" and python_version < "4.0" \
+    --hash=sha256:57e28d156e3d5c10088e0c68abb90bfac3df82b40a71bd0daa20c65ccd5c23de \
+    --hash=sha256:59127c392cc44c2da5bb3192169a91f429924e17aff6534d70fdc02ab3e04320
 pymysql==1.1.0 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:4f13a7df8bf36a51e81dd9f3605fede45a4878fe02f9236349fd82a3f0612f96 \
     --hash=sha256:8969ec6d763c856f7073c4c64662882675702efcb114b4bcbb955aea3a069fa7
