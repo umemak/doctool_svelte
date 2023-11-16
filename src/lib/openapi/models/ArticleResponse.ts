@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { User } from './User';
+import type { UserResponse } from './UserResponse';
 import {
-    UserFromJSON,
-    UserFromJSONTyped,
-    UserToJSON,
-} from './User';
+    UserResponseFromJSON,
+    UserResponseFromJSONTyped,
+    UserResponseToJSON,
+} from './UserResponse';
 
 /**
  * 
@@ -52,10 +52,10 @@ export interface ArticleResponse {
     authorId: string;
     /**
      * 
-     * @type {User}
+     * @type {UserResponse}
      * @memberof ArticleResponse
      */
-    author: User;
+    author: UserResponse;
     /**
      * 
      * @type {Date}
@@ -88,6 +88,18 @@ export interface ArticleResponse {
     filename: string;
     /**
      * 
+     * @type {string}
+     * @memberof ArticleResponse
+     */
+    filetype: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ArticleResponse
+     */
+    filesize: number;
+    /**
+     * 
      * @type {boolean}
      * @memberof ArticleResponse
      */
@@ -97,7 +109,7 @@ export interface ArticleResponse {
      * @type {Date}
      * @memberof ArticleResponse
      */
-    showFrom: Date;
+    showFrom: Date | null;
     /**
      * 
      * @type {Date}
@@ -151,6 +163,8 @@ export function instanceOfArticleResponse(value: object): boolean {
     isInstance = isInstance && "deletedAt" in value;
     isInstance = isInstance && "path" in value;
     isInstance = isInstance && "filename" in value;
+    isInstance = isInstance && "filetype" in value;
+    isInstance = isInstance && "filesize" in value;
     isInstance = isInstance && "allowExternal" in value;
     isInstance = isInstance && "showFrom" in value;
     isInstance = isInstance && "showUntil" in value;
@@ -177,14 +191,16 @@ export function ArticleResponseFromJSONTyped(json: any, ignoreDiscriminator: boo
         'title': json['title'],
         'description': json['description'],
         'authorId': json['author_id'],
-        'author': UserFromJSON(json['author']),
+        'author': UserResponseFromJSON(json['author']),
         'createdAt': (new Date(json['created_at'])),
         'updatedAt': (new Date(json['updated_at'])),
         'deletedAt': (json['deleted_at'] === null ? null : new Date(json['deleted_at'])),
         'path': json['path'],
         'filename': json['filename'],
+        'filetype': json['filetype'],
+        'filesize': json['filesize'],
         'allowExternal': json['allow_external'],
-        'showFrom': (new Date(json['show_from'])),
+        'showFrom': (json['show_from'] === null ? null : new Date(json['show_from'])),
         'showUntil': (json['show_until'] === null ? null : new Date(json['show_until'])),
         'reviewOk': json['review_ok'],
         'tags': json['tags'],
@@ -207,14 +223,16 @@ export function ArticleResponseToJSON(value?: ArticleResponse | null): any {
         'title': value.title,
         'description': value.description,
         'author_id': value.authorId,
-        'author': UserToJSON(value.author),
+        'author': UserResponseToJSON(value.author),
         'created_at': (value.createdAt.toISOString()),
         'updated_at': (value.updatedAt.toISOString()),
         'deleted_at': (value.deletedAt === null ? null : value.deletedAt.toISOString()),
         'path': value.path,
         'filename': value.filename,
+        'filetype': value.filetype,
+        'filesize': value.filesize,
         'allow_external': value.allowExternal,
-        'show_from': (value.showFrom.toISOString()),
+        'show_from': (value.showFrom === null ? null : value.showFrom.toISOString()),
         'show_until': (value.showUntil === null ? null : value.showUntil.toISOString()),
         'review_ok': value.reviewOk,
         'tags': value.tags,

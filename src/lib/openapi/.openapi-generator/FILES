@@ -4,6 +4,7 @@ apis/AdventCalendarsApi.ts
 apis/ArticlesApi.ts
 apis/LoginApi.ts
 apis/ReviewsApi.ts
+apis/SignupApi.ts
 apis/UsersApi.ts
 apis/index.ts
 index.ts
@@ -20,7 +21,8 @@ models/LoginResponse.ts
 models/ReviewCreate.ts
 models/ReviewResponse.ts
 models/ReviewUpdate.ts
-models/User.ts
+models/SignupRequest.ts
+models/SignupResponse.ts
 models/UserCreate.ts
 models/UserResponse.ts
 models/ValidationError.ts

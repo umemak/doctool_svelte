@@ -51,6 +51,18 @@ export interface ArticleCreate {
     filename: string;
     /**
      * 
+     * @type {string}
+     * @memberof ArticleCreate
+     */
+    filetype: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ArticleCreate
+     */
+    filesize: number;
+    /**
+     * 
      * @type {boolean}
      * @memberof ArticleCreate
      */
@@ -85,6 +97,8 @@ export function instanceOfArticleCreate(value: object): boolean {
     isInstance = isInstance && "authorId" in value;
     isInstance = isInstance && "path" in value;
     isInstance = isInstance && "filename" in value;
+    isInstance = isInstance && "filetype" in value;
+    isInstance = isInstance && "filesize" in value;
     isInstance = isInstance && "allowExternal" in value;
     isInstance = isInstance && "showFrom" in value;
     isInstance = isInstance && "showUntil" in value;
@@ -108,6 +122,8 @@ export function ArticleCreateFromJSONTyped(json: any, ignoreDiscriminator: boole
         'authorId': json['author_id'],
         'path': json['path'],
         'filename': json['filename'],
+        'filetype': json['filetype'],
+        'filesize': json['filesize'],
         'allowExternal': json['allow_external'],
         'showFrom': (json['show_from'] === null ? null : new Date(json['show_from'])),
         'showUntil': (json['show_until'] === null ? null : new Date(json['show_until'])),
@@ -129,6 +145,8 @@ export function ArticleCreateToJSON(value?: ArticleCreate | null): any {
         'author_id': value.authorId,
         'path': value.path,
         'filename': value.filename,
+        'filetype': value.filetype,
+        'filesize': value.filesize,
         'allow_external': value.allowExternal,
         'show_from': (value.showFrom === null ? null : value.showFrom.toISOString()),
         'show_until': (value.showUntil === null ? null : value.showUntil.toISOString()),

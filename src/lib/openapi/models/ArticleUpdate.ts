@@ -57,6 +57,18 @@ export interface ArticleUpdate {
     filename: string | null;
     /**
      * 
+     * @type {string}
+     * @memberof ArticleUpdate
+     */
+    filetype: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof ArticleUpdate
+     */
+    filesize: number | null;
+    /**
+     * 
      * @type {boolean}
      * @memberof ArticleUpdate
      */
@@ -92,6 +104,8 @@ export function instanceOfArticleUpdate(value: object): boolean {
     isInstance = isInstance && "authorId" in value;
     isInstance = isInstance && "path" in value;
     isInstance = isInstance && "filename" in value;
+    isInstance = isInstance && "filetype" in value;
+    isInstance = isInstance && "filesize" in value;
     isInstance = isInstance && "allowExternal" in value;
     isInstance = isInstance && "showFrom" in value;
     isInstance = isInstance && "showUntil" in value;
@@ -116,6 +130,8 @@ export function ArticleUpdateFromJSONTyped(json: any, ignoreDiscriminator: boole
         'authorId': json['author_id'],
         'path': json['path'],
         'filename': json['filename'],
+        'filetype': json['filetype'],
+        'filesize': json['filesize'],
         'allowExternal': json['allow_external'],
         'showFrom': (json['show_from'] === null ? null : new Date(json['show_from'])),
         'showUntil': (json['show_until'] === null ? null : new Date(json['show_until'])),
@@ -138,6 +154,8 @@ export function ArticleUpdateToJSON(value?: ArticleUpdate | null): any {
         'author_id': value.authorId,
         'path': value.path,
         'filename': value.filename,
+        'filetype': value.filetype,
+        'filesize': value.filesize,
         'allow_external': value.allowExternal,
         'show_from': (value.showFrom === null ? null : value.showFrom.toISOString()),
         'show_until': (value.showUntil === null ? null : value.showUntil.toISOString()),

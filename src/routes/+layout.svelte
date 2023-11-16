@@ -33,16 +33,4 @@
 		display: flex;
 		gap: 1rem;
 	}
-
-	form {
-		display: block;
-		padding: 0;
-		background-color: transparent;
-	}
-
-	form button {
-		padding: 0;
-		background-color: transparent;
-		color: inherit;
-	}
 </style>

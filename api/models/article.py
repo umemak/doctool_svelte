@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, DateTime, String, Text, ForeignKey, Boolean
+from sqlalchemy import Column, DateTime, String, Text, ForeignKey, Boolean, Integer
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import UUIDType
 from db import Base
@@ -19,6 +19,8 @@ class Article(Base):
     author = relationship("User", back_populates="articles")
     path = Column(String(255), nullable=False)
     filename = Column(String(255), nullable=False)
+    filetype = Column(String(255), nullable=False)
+    filesize = Column(Integer, nullable=False)
     allow_external = Column(Boolean, nullable=False, default=False)
     show_from = Column(DateTime, nullable=True)
     show_until = Column(DateTime, nullable=True)

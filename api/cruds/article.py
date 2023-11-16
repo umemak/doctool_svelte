@@ -24,6 +24,8 @@ async def get_articles(db: Session) -> List[article_schema.ArticleResponse]:
             "deleted_at": article.deleted_at,
             "path": article.path,
             "filename": article.filename,
+            "filetype": article.filetype,
+            "filesize": article.filesize,
             "allow_external": article.allow_external,
             "show_from": article.show_from,
             "show_until": article.show_until,
@@ -59,6 +61,8 @@ async def create_article(
         "deleted_at": article.deleted_at,
         "path": article.path,
         "filename": article.filename,
+        "filetype": article.filetype,
+        "filesize": article.filesize,
         "allow_external": article.allow_external,
         "show_from": article.show_from,
         "show_until": article.show_until,
@@ -88,6 +92,8 @@ async def get_article(db: Session, id: str) -> article_schema.ArticleResponse:
             "deleted_at": article.deleted_at,
             "path": article.path,
             "filename": article.filename,
+            "filetype": article.filetype,
+            "filesize": article.filesize,
             "allow_external": article.allow_external,
             "show_from": article.show_from,
             "show_until": article.show_until,
@@ -101,13 +107,15 @@ async def get_article(db: Session, id: str) -> article_schema.ArticleResponse:
         return {"error": "article not found"}
 
 
-async def update_article(db: Session, article_update: article_schema.ArticleUpdate) -> article_schema.ArticleResponse:
-    article = db.query(Article).filter(Article.id == article_update.id).first()
+async def update_article(db: Session, id: str, article_update: article_schema.ArticleUpdate) -> article_schema.ArticleResponse:
+    article = db.query(Article).filter(Article.id == id).first()
     if article:
         article.title = article_update.title
         article.description = article_update.description
         article.path = article_update.path
         article.filename = article_update.filename
+        article.filetype = article_update.filetype
+        article.filesize = article_update.filesize
         article.allow_external = article_update.allow_external
         article.show_from = article_update.show_from
         article.show_until = article_update.show_until
@@ -129,6 +137,8 @@ async def update_article(db: Session, article_update: article_schema.ArticleUpda
             "deleted_at": article.deleted_at,
             "path": article.path,
             "filename": article.filename,
+            "filetype": article.filetype,
+            "filesize": article.filesize,
             "allow_external": article.allow_external,
             "show_from": article.show_from,
             "show_until": article.show_until,
@@ -163,6 +173,8 @@ async def delete_article(db: Session, id: str) -> article_schema.ArticleResponse
             "deleted_at": article.deleted_at,
             "path": article.path,
             "filename": article.filename,
+            "filetype": article.filetype,
+            "filesize": article.filesize,
             "allow_external": article.allow_external,
             "show_from": article.show_from,
             "show_until": article.show_until,
@@ -197,6 +209,8 @@ async def restore_article(db: Session, id: str) -> article_schema.ArticleRespons
             "deleted_at": article.deleted_at,
             "path": article.path,
             "filename": article.filename,
+            "filetype": article.filetype,
+            "filesize": article.filesize,
             "allow_external": article.allow_external,
             "show_from": article.show_from,
             "show_until": article.show_until,

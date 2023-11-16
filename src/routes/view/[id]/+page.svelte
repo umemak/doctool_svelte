@@ -38,7 +38,15 @@
 			公開期間: {article.showFrom ? `${new Date(article.showFrom).toLocaleString()}` : '未定義'} ～
 			{article.showUntil ? `${new Date(article.showUntil).toLocaleString()}` : '未定義'}
 		</p>
-		<button on:click={downloadGET}>ファイルをダウンロード</button>
+		<p>投稿日時: {new Date(article.createdAt).toLocaleString()}</p>
+		<p>更新日時: {new Date(article.updatedAt).toLocaleString()}</p>
+		<p>
+			ドキュメント名: {article.filename}
+		</p>
+		<p>
+			<button on:click={downloadGET}>ファイルをダウンロード</button>
+			{article.filetype} ({article.filesize} bytes)
+		</p>
 		<!-- レビュー担当だったら、コメントと承認／否認のフォームを表示する -->
 		{#if article.reviews[0]?.reviewerId == user.id}
 			<form method="POST" action="?/review">
@@ -61,13 +69,13 @@
 		{#if article.authorId == user.id}
 			<form method="GET" action="/edit/{article.id}">
 				<div class="submit-container">
-					<button type="submit">🖊️ 投稿を編集</button>
+					<button type="submit">投稿を編集</button>
 				</div>
 			</form>
 			<form method="POST" action="?/delete">
 				<input type="hidden" name="articleId" value={article.id} />
 				<div class="submit-container">
-					<button type="submit">🗑️ 投稿を削除</button>
+					<button type="submit">投稿を削除</button>
 				</div>
 			</form>
 		{/if}

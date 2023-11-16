@@ -44,6 +44,8 @@ export const actions: Actions = {
 			description: formData.description as string,
 			path: objPath,
 			filename: file.name,
+			filetype: file.type,
+			filesize: file.size,
 			authorId: user.id,
 			allowExternal: formData.allow_external === "on" ? true : false,
 			showFrom: formData.show_from === "" ? null : new Date(formData.show_from as string),

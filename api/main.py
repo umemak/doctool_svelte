@@ -12,6 +12,7 @@ from routers.article import router as articleRouter
 from routers.review import router as reviewRouter
 from routers.advent_calendar import router as adventCalendarRouter
 from routers.advent_calendar_article import router as adventCalendarArticleRouter
+from routers.signup import router as signupRouter
 
 
 logger = getLogger(__name__)
@@ -54,6 +55,7 @@ class LoggingContextRoute(APIRoute):
 
 _app = FastAPI()
 _app.router.route_class = LoggingContextRoute
+_app.include_router(signupRouter)
 _app.include_router(loginRouter)
 _app.include_router(userRouter)
 _app.include_router(articleRouter)

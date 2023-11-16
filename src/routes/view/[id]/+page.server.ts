@@ -73,6 +73,8 @@ export const actions: Actions = {
 			description: article.description,
 			path: article.path,
 			filename: article.filename,
+			filetype: article.filetype,
+			filesize: article.filesize,
 			authorId: article.authorId,
 			allowExternal: article.allowExternal,
 			showFrom: article.showFrom,
