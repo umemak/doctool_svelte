@@ -1,0 +1,150 @@
+{
+  "version": "34.0.0",
+  "artifacts": {
+    "umema-doctool-svelte-Site.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "umema-doctool-svelte-Site.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "umema-doctool-svelte-Site": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://418440285537/us-east-1",
+      "properties": {
+        "templateFile": "umema-doctool-svelte-Site.template.json",
+        "terminationProtection": false,
+        "tags": {
+          "sst:app": "doctool-svelte",
+          "sst:stage": "umema"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::418440285537:role/cdk-hnb659fds-deploy-role-418440285537-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::418440285537:role/cdk-hnb659fds-cfn-exec-role-418440285537-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-418440285537-us-east-1/c8528211307d86544f026e5fea50c87d4631dfa8adf03429fa4ec4bbde4fc620.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "umema-doctool-svelte-Site.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::418440285537:role/cdk-hnb659fds-lookup-role-418440285537-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "umema-doctool-svelte-Site.assets"
+      ],
+      "metadata": {
+        "/umema-doctool-svelte-Site": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "sst:app",
+                "Value": "doctool-svelte"
+              },
+              {
+                "Key": "sst:stage",
+                "Value": "umema"
+              }
+            ]
+          }
+        ],
+        "/umema-doctool-svelte-Site/CustomResourceHandler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerServiceRole41AEC181"
+          }
+        ],
+        "/umema-doctool-svelte-Site/CustomResourceHandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerE8FB56BA"
+          }
+        ],
+        "/umema-doctool-svelte-Site/site/ServerFunctionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "siteServerFunctionRole1F8F4FAC"
+          }
+        ],
+        "/umema-doctool-svelte-Site/site/ServerFunction/AssetReplacerPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "siteServerFunctionAssetReplacerPolicy304BF125"
+          }
+        ],
+        "/umema-doctool-svelte-Site/site/ServerFunction/AssetReplacer/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "siteServerFunctionAssetReplacer9A11D516"
+          }
+        ],
+        "/umema-doctool-svelte-Site/site/ServerFunction/ServerFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "siteServerFunction6DFA6F1B"
+          }
+        ],
+        "/umema-doctool-svelte-Site/site/ServerFunction/ServerFunction/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "siteServerFunctionLogRetention7123678D"
+          }
+        ],
+        "/umema-doctool-svelte-Site/site/Parameter_url/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "siteParameterurl3D1716BC"
+          }
+        ],
+        "/umema-doctool-svelte-Site/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+          }
+        ],
+        "/umema-doctool-svelte-Site/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB"
+          }
+        ],
+        "/umema-doctool-svelte-Site/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A"
+          }
+        ],
+        "/umema-doctool-svelte-Site/SSTStackOutputSSTMetadata": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SSTMetadata"
+          }
+        ],
+        "/umema-doctool-svelte-Site/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/umema-doctool-svelte-Site/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "umema-doctool-svelte-Site"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

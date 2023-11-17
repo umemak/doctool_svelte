@@ -1,0 +1,23 @@
+2023-11-17T05:36:29.989Z  +2733ms [debug] Config loaded {"version":"2.36.1","cdkVersion":"2.101.1","constructsVersion":"10.2.69","config":{"name":"doctool-svelte","region":"us-east-1","stage":"umema","ssmPrefix":"/sst/doctool-svelte/umema/"},"metafile":{"inputs":{"sst.config.ts":{"bytes":226,"imports":[{"path":"sst/constructs","kind":"import-statement","external":true}],"format":"esm"}},"outputs":{".sst.config.1700199387268.mjs":{"imports":[{"path":"sst/constructs","kind":"import-statement","external":true}],"exports":["default"],"entryPoint":"sst.config.ts","inputs":{"sst.config.ts":{"bytesInOutput":154}},"bytes":336}}},"paths":{"config":"C:\\Users\\umema\\workspace\\doctool_svelte\\sst.config.ts","root":"C:\\Users\\umema\\workspace\\doctool_svelte","out":"C:\\Users\\umema\\workspace\\doctool_svelte\\.sst","artifacts":"C:\\Users\\umema\\workspace\\doctool_svelte\\.sst\\artifacts"}}
+2023-11-17T05:36:30.688Z   +699ms [debug] dev is ready
+2023-11-17T05:36:30.751Z    +63ms [debug] Fetching all metadata
+2023-11-17T05:36:30.751Z     +0ms [debug] Using AWS profile 
+2023-11-17T05:36:30.752Z     +1ms [debug] Initializing bootstrap context
+2023-11-17T05:36:30.755Z     +3ms [debug] Created AWS client CloudFormationClient
+2023-11-17T05:36:30.801Z    +46ms [debug] Created AWS client RDSDataClient
+2023-11-17T05:36:30.997Z   +196ms [debug] Created AWS client IoTClient
+2023-11-17T05:36:30.997Z     +0ms [debug] Getting IoT endpoint
+2023-11-17T05:36:32.353Z  +1356ms [debug] Using IoT endpoint: a30vagmbpyyf2y-ats.iot.us-east-1.amazonaws.com
+2023-11-17T05:36:32.821Z   +468ms [debug] [kysely-codegen] Loaded kyseley type generator
+2023-11-17T05:36:33.136Z   +315ms [debug] Loaded bootstrap status
+2023-11-17T05:36:33.136Z     +0ms [debug] Bootstrap context initialized {"status":"ready","version":"7.2","bucket":"sstbootstrap-useast124d14e4b-nbwypssj9q6o"}
+2023-11-17T05:36:33.137Z     +1ms [debug] Created AWS client S3Client
+2023-11-17T05:36:33.176Z    +39ms [debug] Publishing event {"type":"cli.dev","properties":{"stage":"umema","app":"doctool-svelte"},"sourceID":"2f5a164a993aa4699bf3fad6e3bc433f"}
+2023-11-17T05:36:33.176Z     +0ms [debug] Encoded iot message into 1 parts
+2023-11-17T05:36:34.329Z  +1153ms [debug] Synthesizing stacks...
+2023-11-17T05:36:34.344Z    +15ms [debug] Created AWS client STSClient
+2023-11-17T05:36:34.772Z   +428ms [debug] IoT connected
+2023-11-17T05:36:34.774Z     +2ms [debug] Fetched metadata from 0 stacks
+2023-11-17T05:36:35.082Z   +308ms [debug] Using identity Account: 418440285537 User: AROAWC3H4BVQUFSJFTVZL:umematsu
+2023-11-17T05:36:35.086Z     +4ms [debug] Generating types in C:\Users\umema\workspace\doctool_svelte\.sst\types
+2023-11-17T05:36:35.469Z   +383ms [debug] IOT Published /sst/doctool-svelte/umema/events cli.dev

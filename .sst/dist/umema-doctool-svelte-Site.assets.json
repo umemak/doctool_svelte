@@ -1,0 +1,62 @@
+{
+  "version": "34.0.0",
+  "files": {
+    "4c93bec0b7b401d3568c8b5f318a9f5deb3b995f3df8f96d233c32fb035bcc59": {
+      "source": {
+        "path": "asset.4c93bec0b7b401d3568c8b5f318a9f5deb3b995f3df8f96d233c32fb035bcc59",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "418440285537-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-418440285537-us-east-1",
+          "objectKey": "4c93bec0b7b401d3568c8b5f318a9f5deb3b995f3df8f96d233c32fb035bcc59.zip",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::418440285537:role/cdk-hnb659fds-file-publishing-role-418440285537-us-east-1"
+        }
+      }
+    },
+    "5bc602ecde93c947efe5899ae355f999986a1acbe610b1c0b9c468d738857555": {
+      "source": {
+        "path": "asset.5bc602ecde93c947efe5899ae355f999986a1acbe610b1c0b9c468d738857555",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "418440285537-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-418440285537-us-east-1",
+          "objectKey": "5bc602ecde93c947efe5899ae355f999986a1acbe610b1c0b9c468d738857555.zip",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::418440285537:role/cdk-hnb659fds-file-publishing-role-418440285537-us-east-1"
+        }
+      }
+    },
+    "12a45e980dbf99fa5ad80b93d94ae935d3b6d7b4dcc48eef6dd03acd9acdc443": {
+      "source": {
+        "path": "asset.12a45e980dbf99fa5ad80b93d94ae935d3b6d7b4dcc48eef6dd03acd9acdc443.zip",
+        "packaging": "file"
+      },
+      "destinations": {
+        "418440285537-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-418440285537-us-east-1",
+          "objectKey": "12a45e980dbf99fa5ad80b93d94ae935d3b6d7b4dcc48eef6dd03acd9acdc443.zip",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::418440285537:role/cdk-hnb659fds-file-publishing-role-418440285537-us-east-1"
+        }
+      }
+    },
+    "c8528211307d86544f026e5fea50c87d4631dfa8adf03429fa4ec4bbde4fc620": {
+      "source": {
+        "path": "umema-doctool-svelte-Site.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "418440285537-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-418440285537-us-east-1",
+          "objectKey": "c8528211307d86544f026e5fea50c87d4631dfa8adf03429fa4ec4bbde4fc620.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::418440285537:role/cdk-hnb659fds-file-publishing-role-418440285537-us-east-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
