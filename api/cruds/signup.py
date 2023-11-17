@@ -10,6 +10,10 @@ from datetime import datetime
 
 
 async def signup(db: Session, request: signup_schema.SignupRequest) -> signup_schema.SignupResponse:
+    domains = os.getenv("ALLOW_EMAIL_DOMAINS")
+    if domains:
+        if request.email.split("@")[1] not in domains.split(","):
+            return {"error": "email domain not allowed"}
     # ツールDBにuserが存在したら、エラー
     # ツールDBにuserが存在しなかったら、APIに問い合わせる
     # APIにuserが存在しなかったら、APIとツールDBに登録する

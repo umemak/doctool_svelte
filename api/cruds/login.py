@@ -13,6 +13,10 @@ async def login(db: Session, request: login_schema.LoginRequest) -> login_schema
     load_dotenv()
     api_url = os.getenv("API_URL")
     api_key = os.getenv("API_KEY")
+    domains = os.getenv("ALLOW_EMAIL_DOMAINS")
+    if domains:
+        if request.email.split("@")[1] not in domains.split(","):
+            return {"error": "email domain not allowed"}
     url = api_url + "/login"
     headers = {"content-type": "application/json"}
     payload = {"email": request.email, "password": request.password, "app_key": api_key}

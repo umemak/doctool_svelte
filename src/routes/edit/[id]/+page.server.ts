@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { error, redirect } from '@sveltejs/kit';
 import { upload } from '$lib/s3';
-import { ArticlesAPI, UsersAPI,ReviewsAPI } from '$lib/api';
+import { ArticlesAPI, UsersAPI, ReviewsAPI } from '$lib/api';
 import type { ArticleResponse, UserResponse } from '$lib/openapi';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
@@ -73,39 +73,49 @@ export const actions: Actions = {
 			// S3にアップロード
 			const objPath = await upload(file);
 			// データベースを更新
-			await ArticlesAPI.updateArticleArticlesIdPut({ id: articleId, articleUpdate: {
-				id: articleId,
-				title: formData.title as string,
-				description: formData.description as string,
-				authorId: user.id,
-				path: objPath,
-				filename: file.name,
-				allowExternal: formData.allow_external === "on" ? true : false,
-				showFrom: formData.show_from === "" ? null : new Date(formData.show_from as string),
-				showUntil: formData.show_until === "" ? null : new Date(formData.show_until as string),
-				reviewOk: formData.review_ok === "on" ? true : false,
-			}});
+			await ArticlesAPI.updateArticleArticlesIdPut({
+				id: articleId, articleUpdate: {
+					id: articleId,
+					title: formData.title as string,
+					description: formData.description as string,
+					authorId: user.id,
+					path: objPath,
+					filename: file.name,
+					filetype: file.type,
+					filesize: file.size,
+					allowExternal: formData.allow_external === "on" ? true : false,
+					showFrom: formData.show_from === "" ? null : new Date(formData.show_from as string),
+					showUntil: formData.show_until === "" ? null : new Date(formData.show_until as string),
+					reviewOk: formData.review_ok === "on" ? true : false,
+				}
+			});
 		} else {
 			// データベースを更新
-			await ArticlesAPI.updateArticleArticlesIdPut({ id: articleId, articleUpdate: {
-				id: articleId,
-				title: formData.title as string,
-				description: formData.description as string,
-				authorId: user.id,
-				path: formData.path as string,
-				filename: formData.filename as string,
-				allowExternal: formData.allow_external === "on" ? true : false,
-				showFrom: formData.show_from === "" ? null : new Date(formData.show_from as string),
-				showUntil: formData.show_until === "" ? null : new Date(formData.show_until as string),
-				reviewOk: formData.review_ok === "on" ? true : false,
-			}});
+			await ArticlesAPI.updateArticleArticlesIdPut({
+				id: articleId, articleUpdate: {
+					id: articleId,
+					title: formData.title as string,
+					description: formData.description as string,
+					authorId: user.id,
+					path: formData.path as string,
+					filename: "",
+					filetype: "",
+					filesize: 0,
+					allowExternal: formData.allow_external === "on" ? true : false,
+					showFrom: formData.show_from === "" ? null : new Date(formData.show_from as string),
+					showUntil: formData.show_until === "" ? null : new Date(formData.show_until as string),
+					reviewOk: formData.review_ok === "on" ? true : false,
+				}
+			});
 		}
 		if (formData.review === "on") {
-			await ReviewsAPI.createReviewReviewsPost({reviewCreate:{
-				reviewerId: formData.reviewer as string,
-				articleId: articleId,
-				comment: "",
-			}})
+			await ReviewsAPI.createReviewReviewsPost({
+				reviewCreate: {
+					reviewerId: formData.reviewer as string,
+					articleId: articleId,
+					comment: "",
+				}
+			})
 		}
 		// 詳細ページにリダイレクト
 		throw redirect(302, '/view/' + articleId);
