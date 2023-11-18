@@ -9,14 +9,12 @@ security = HTTPBasic()
 
 
 def auth_basic(credentials: HTTPBasicCredentials):
-    correct_username = secrets.compare_digest(
-        credentials.username, os.environ.get("BASIC_USER"))
-    correct_password = secrets.compare_digest(
-        credentials.password, os.environ.get("BASIC_PASSWORD"))
+    correct_username = secrets.compare_digest(credentials.username, os.environ.get("BASIC_USER"))
+    correct_password = secrets.compare_digest(credentials.password, os.environ.get("BASIC_PASSWORD"))
     if not (correct_username and correct_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password",
+            detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Basic"},
         )
 
@@ -30,7 +28,8 @@ class AuthStaticFiles(StaticFiles):
         super().__init__(*args, **kwargs)
 
     async def __call__(self, scope, receive, send) -> None:
-        assert scope["type"] == "http"
+        if scope["type"] != "http":
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid scope type")
 
         request = Request(scope, receive)
         credentials = await security(request)
