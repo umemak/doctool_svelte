@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from starlette.middleware.cors import CORSMiddleware
 from mangum import Mangum
 from logging import getLogger, StreamHandler, DEBUG
@@ -13,6 +13,7 @@ from routers.review import router as reviewRouter
 from routers.advent_calendar import router as adventCalendarRouter
 from routers.advent_calendar_article import router as adventCalendarArticleRouter
 from routers.signup import router as signupRouter
+from basic_auth import verify_from_api
 
 
 logger = getLogger(__name__)
@@ -52,8 +53,7 @@ class LoggingContextRoute(APIRoute):
 
         return custom_route_handler
 
-
-_app = FastAPI()
+_app = FastAPI(dependencies=[Depends(verify_from_api)])
 _app.router.route_class = LoggingContextRoute
 _app.include_router(signupRouter)
 _app.include_router(loginRouter)
