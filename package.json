@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "set VITE_GIT_COMMIT=$(git rev-parse HEAD) && vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "npm run test:integration && npm run test:unit",
@@ -40,6 +40,11 @@
 	"type": "module",
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.438.0",
+		"@milkdown/core": "^7.3.3",
+		"@milkdown/plugin-listener": "^7.3.3",
+		"@milkdown/plugin-upload": "^7.3.3",
+		"@milkdown/preset-gfm": "^7.3.3",
+		"@milkdown/theme-nord": "^7.3.3",
 		"@prisma/client": "^5.5.2",
 		"bcryptjs": "^2.4.3",
 		"jsonwebtoken": "^9.0.2",

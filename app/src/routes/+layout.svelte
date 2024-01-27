@@ -3,6 +3,7 @@
 	import type { LayoutData } from './$types';
 
 	export let data: LayoutData;
+	const gitCommit = import.meta.env.VITE_GIT_COMMIT;
 </script>
 
 <main>
@@ -23,6 +24,7 @@
 		{:else}
 			<div>内部接続({data.ipAddress})</div>
 		{/if}
+		Git Revision: {gitCommit}
 	</nav>
 
 	<slot />

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-
+	import MilkdownEditor from '$lib/components/MilkdownEditor.svelte';
 	export let data: PageData;
 
 	const { users } = data;
@@ -24,6 +24,8 @@
 				<label for="description">説明</label>
 				<input type="text" name="description" id="description" required />
 			</div>
+
+			<MilkdownEditor />
 
 			<div class="group">
 				<label for="file">ファイル</label>
